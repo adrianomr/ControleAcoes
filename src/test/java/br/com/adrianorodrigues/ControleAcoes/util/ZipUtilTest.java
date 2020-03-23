@@ -11,9 +11,9 @@ class ZipUtilTest {
 
     @Test
     void unzip() throws IOException {
-        FileUtil.DeleteFiles("src/main/resources/cotacoes");
-        ZipUtil.Unzip("target/COTAHIST_A2020.ZIP","src/main/resources/cotacoes");
-        File file = new File("src/main/resources/cotacoes/COTAHIST_A2020.TXT");
+        FileUtil.DeleteFiles("src/main/resources/cotacoes/txt");
+        ZipUtil.Unzip("src/main/resources/cotacoes/zip/COTAHIST_A2020.ZIP","src/main/resources/cotacoes/txt");
+        File file = new File("src/main/resources/cotacoes/txt/COTAHIST_A2020.TXT");
         assertTrue(file.exists());
     }
 }
