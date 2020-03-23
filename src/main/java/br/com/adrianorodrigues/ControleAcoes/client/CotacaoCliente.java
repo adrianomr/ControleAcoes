@@ -1,12 +1,8 @@
 package br.com.adrianorodrigues.ControleAcoes.client;
 
-import br.com.adrianorodrigues.ControleAcoes.util.Log;
+import br.com.adrianorodrigues.ControleAcoes.util.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
-import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
@@ -25,7 +21,7 @@ public class CotacaoCliente {
             }
         } catch (IOException e) {
             // handle exception
-            Log.getLogger().warn("Não foi possível ler o arquivo", e);
+            LogUtil.getLogger().warn("Não foi possível ler o arquivo", e);
             return false;
         }
         return true;
