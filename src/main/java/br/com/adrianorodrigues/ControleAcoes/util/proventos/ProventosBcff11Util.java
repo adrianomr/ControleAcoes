@@ -51,12 +51,12 @@ public class ProventosBcff11Util {
             proventos.add(new Provento(12, AcoesBolsaUtil.buscaAcaoPorPapel("BCFF11"), DateFromString.getDate("14/12" +
                     "/2019"),
                     new BigDecimal(0.57)));
-//            proventos.add(new Provento(13, AcoesBolsaUtil.buscaAcaoPorPapel("BCFF11"), DateFromString.getDate("14/01" +
-//                    "/2020"),
-//                    new BigDecimal(0.57)));
-//            proventos.add(new Provento(14, AcoesBolsaUtil.buscaAcaoPorPapel("BCFF11"), DateFromString.getDate("14/02" +
-//                    "/2020"),
-//                    new BigDecimal(0.57)));
+            proventos.add(new Provento(13, AcoesBolsaUtil.buscaAcaoPorPapel("BCFF11"), DateFromString.getDate("14/01" +
+                    "/2020"),
+                    new BigDecimal(0.57)));
+            proventos.add(new Provento(14, AcoesBolsaUtil.buscaAcaoPorPapel("BCFF11"), DateFromString.getDate("14/02" +
+                    "/2020"),
+                    new BigDecimal(0.57)));
         }
         proventosPorAcao.put(AcoesBolsaUtil.buscaAcaoPorPapel("BCFF11").getId(), proventos);
         return proventos;
