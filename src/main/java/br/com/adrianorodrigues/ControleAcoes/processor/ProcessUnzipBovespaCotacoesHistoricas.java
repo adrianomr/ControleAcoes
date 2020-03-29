@@ -1,26 +1,30 @@
 package br.com.adrianorodrigues.ControleAcoes.processor;
 
 import br.com.adrianorodrigues.ControleAcoes.client.CotacaoCliente;
+import br.com.adrianorodrigues.ControleAcoes.util.ZipUtil;
 
-import java.util.*;
-import java.util.concurrent.Callable;
+import java.io.IOException;
+import java.util.Calendar;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 import static br.com.adrianorodrigues.ControleAcoes.util.ConcurrencyUtils.stop;
 
-public class ProcessBovespaCotacoesHistoricas {
-    public static int execute() throws InterruptedException {
+public class ProcessUnzipBovespaCotacoesHistoricas {
+    public static int execute() {
         ExecutorService executor = Executors.newWorkStealingPool();
         AtomicInteger atomicInt = new AtomicInteger(0);
         int anoAtual = Calendar.getInstance().get(Calendar.YEAR);
         IntStream.range(1986, anoAtual)
                 .forEach(i -> {
-                    CotacaoCliente.getCotacoes(i);
-                    atomicInt.addAndGet(1);
+                    try {
+                        ZipUtil.Unzip("src/main/resources/cotacoes/zip/COTAHIST_A"+i+".ZIP","src/main/resources/cotacoes/txt");
+                        atomicInt.addAndGet(1);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 });
         stop(executor);
         System.out.println(atomicInt.get());
