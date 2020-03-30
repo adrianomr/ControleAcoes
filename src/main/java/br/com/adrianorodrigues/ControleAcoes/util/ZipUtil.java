@@ -9,8 +9,6 @@ import java.util.zip.ZipInputStream;
 
 public class ZipUtil {
         public static void Unzip(String filePath, String outputDir) throws IOException {
-//            String fileZip = "target/COTAHIST_A2020.ZIP";
-//            File destDir = new File("src/main/resources/cotacoes");
             String fileZip = filePath;
             File destDir = new File(outputDir);
             byte[] buffer = new byte[1024];

@@ -13,8 +13,6 @@ public class FileUtil {
     }
 
     public static String readFile(String filePath) throws IOException {
-        String expectedData = "Hello, world!";
-
         Class clazz = FileUtil.class;
         InputStream inputStream = new FileInputStream(filePath);
         String data = readFromInputStream(inputStream);
@@ -27,10 +25,8 @@ public class FileUtil {
         try (BufferedReader br
                      = new BufferedReader(new InputStreamReader(inputStream))) {
             String line;
-            int count = 0;
-            while ((line = br.readLine()) != null && count < 2) {
+            while ((line = br.readLine()) != null) {
                 resultStringBuilder.append(line).append("\n");
-                count ++;
             }
         }
         return resultStringBuilder.toString();

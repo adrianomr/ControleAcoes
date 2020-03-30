@@ -26,8 +26,6 @@ public class CotacoesBovespaDto {
     //N(12)
     private double precoMinimo;
     //N(12)
-    private double precoFechamento;
-    //N(12)
     private double precoMedio;
     //N(12)
     private double precoUltimoNegocio;
@@ -40,7 +38,7 @@ public class CotacoesBovespaDto {
     //N(18)
     private long quantidadeTitulosNegociados;
     //N(11)
-    private long volumeTotalTitulos;
+    private double volumeTotalTitulos;
     //X(12)
     private String codigoPapel;
 
@@ -152,15 +150,6 @@ public class CotacoesBovespaDto {
         return this;
     }
 
-    public double getPrecoFechamento() {
-        return precoFechamento;
-    }
-
-    public CotacoesBovespaDto setPrecoFechamento(double precoFechamento) {
-        this.precoFechamento = precoFechamento;
-        return this;
-    }
-
     public double getPrecoMedio() {
         return precoMedio;
     }
@@ -215,11 +204,11 @@ public class CotacoesBovespaDto {
         return this;
     }
 
-    public long getVolumeTotalTitulos() {
+    public double getVolumeTotalTitulos() {
         return volumeTotalTitulos;
     }
 
-    public CotacoesBovespaDto setVolumeTotalTitulos(long volumeTotalTitulos) {
+    public CotacoesBovespaDto setVolumeTotalTitulos(double volumeTotalTitulos) {
         this.volumeTotalTitulos = volumeTotalTitulos;
         return this;
     }
@@ -231,5 +220,31 @@ public class CotacoesBovespaDto {
     public CotacoesBovespaDto setCodigoPapel(String codigoPapel) {
         this.codigoPapel = codigoPapel;
         return this;
+    }
+
+    @Override
+    public String toString() {
+        return "CotacoesBovespaDto{" +
+                "tipoRegistro=" + tipoRegistro +
+                ", data='" + data + '\'' +
+                ", codigoBdi='" + codigoBdi + '\'' +
+                ", codNegociacaoPapel='" + codNegociacaoPapel + '\'' +
+                ", tipoMercado=" + tipoMercado +
+                ", nomeResumidoEmpresaEmissora='" + nomeResumidoEmpresaEmissora + '\'' +
+                ", especificacaoPapel='" + especificacaoPapel + '\'' +
+                ", prazoMercadoTermo='" + prazoMercadoTermo + '\'' +
+                ", moedaReferencia='" + moedaReferencia + '\'' +
+                ", precoAbertura=" + precoAbertura +
+                ", precoMaximo=" + precoMaximo +
+                ", precoMinimo=" + precoMinimo +
+                ", precoMedio=" + precoMedio +
+                ", precoUltimoNegocio=" + precoUltimoNegocio +
+                ", precoMelhorOfertaCompra=" + precoMelhorOfertaCompra +
+                ", precoMelhorOfertaVenda=" + precoMelhorOfertaVenda +
+                ", numeroNegociosEfetuados=" + numeroNegociosEfetuados +
+                ", quantidadeTitulosNegociados=" + quantidadeTitulosNegociados +
+                ", volumeTotalTitulos=" + volumeTotalTitulos +
+                ", codigoPapel='" + codigoPapel + '\'' +
+                '}';
     }
 }

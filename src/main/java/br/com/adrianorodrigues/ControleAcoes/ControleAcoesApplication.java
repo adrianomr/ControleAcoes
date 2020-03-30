@@ -20,7 +20,7 @@ public class ControleAcoesApplication {
 	@Bean
 	public CommandLineRunner run() throws Exception {
 		return args -> {
-			CotacaoCliente.getCotacoes();
+			CotacaoCliente.getCotacoes(2020);
 		};
 	}
 

@@ -29,3 +29,8 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Project ###
+
+**/src/main/resources/cotacoes/zip/**
+**/src/main/resources/cotacoes/txt/**

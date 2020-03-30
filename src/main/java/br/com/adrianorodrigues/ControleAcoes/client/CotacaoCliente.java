@@ -8,12 +8,13 @@ import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 
 public class CotacaoCliente {
     private Logger logger = LoggerFactory.getLogger(getClass());
-    public static boolean getCotacoes(){
-        try (BufferedInputStream in = new BufferedInputStream(new URL("http://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A2020.ZIP").openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream("src/main/resources/cotacoes/zip/COTAHIST_A2020.ZIP")) {
+    public static boolean getCotacoes(int ano){
+        try (BufferedInputStream in = new BufferedInputStream(new URL("http://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A" + ano + ".ZIP").openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream("src/main/resources/cotacoes/zip/COTAHIST_A" + ano + ".ZIP")) {
             byte dataBuffer[] = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {

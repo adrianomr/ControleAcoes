@@ -1,5 +1,6 @@
 package br.com.adrianorodrigues.ControleAcoes.util;
 
+import br.com.adrianorodrigues.ControleAcoes.builder.CotacoesBovespaDtoBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
@@ -13,6 +14,9 @@ class FileUtilTest {
     @Test
     void readFile() throws IOException {
         String data = FileUtil.readFile("src/main/resources/cotacoes/txt/COTAHIST_A2020.TXT");
-        System.out.println(data);
+        String[] cotacoes = data.split("\n");
+        for (int i = 1; i < cotacoes.length-1; i++){
+            System.out.println(CotacoesBovespaDtoBuilder.build(cotacoes[i]));
+        }
     }
 }
