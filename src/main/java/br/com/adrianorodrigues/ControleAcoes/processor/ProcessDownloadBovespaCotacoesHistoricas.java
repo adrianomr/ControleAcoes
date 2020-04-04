@@ -1,7 +1,9 @@
 package br.com.adrianorodrigues.ControleAcoes.processor;
 
 import br.com.adrianorodrigues.ControleAcoes.client.CotacaoCliente;
+import br.com.adrianorodrigues.ControleAcoes.util.ZipUtil;
 
+import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -14,13 +16,16 @@ import static br.com.adrianorodrigues.ControleAcoes.util.ConcurrencyUtils.stop;
 
 public class ProcessDownloadBovespaCotacoesHistoricas {
     public static int execute() {
-        ExecutorService executor = Executors.newWorkStealingPool();
+        ExecutorService executor = Executors.newFixedThreadPool(4);
         AtomicInteger atomicInt = new AtomicInteger(0);
         int anoAtual = Calendar.getInstance().get(Calendar.YEAR);
         IntStream.range(1986, anoAtual)
                 .forEach(i -> {
-                    CotacaoCliente.getCotacoes(i);
-                    atomicInt.addAndGet(1);
+                    Runnable task = () -> {
+                        CotacaoCliente.getCotacoes(i);
+                        atomicInt.addAndGet(1);
+                    };
+                    executor.submit(task);
                 });
         stop(executor);
         System.out.println(atomicInt.get());

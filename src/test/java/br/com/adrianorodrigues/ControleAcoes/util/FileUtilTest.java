@@ -4,6 +4,7 @@ import br.com.adrianorodrigues.ControleAcoes.builder.CotacoesBovespaDtoBuilder;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -18,5 +19,10 @@ class FileUtilTest {
         for (int i = 1; i < cotacoes.length-1; i++){
             System.out.println(CotacoesBovespaDtoBuilder.build(cotacoes[i]));
         }
+    }
+
+    @Test
+    void listFilesForFolder() {
+        System.out.println(FileUtil.listFilesForFolder(new File("src/main/resources/cotacoes/txt")));
     }
 }

@@ -1,6 +1,8 @@
 package br.com.adrianorodrigues.ControleAcoes.util;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class FileUtil {
     public static void DeleteFiles(String filePath){
@@ -30,5 +32,17 @@ public class FileUtil {
             }
         }
         return resultStringBuilder.toString();
+    }
+
+    public static List<String> listFilesForFolder(final File folder) {
+        List<String> files = new ArrayList<>();
+        for (final File fileEntry : folder.listFiles()) {
+            if (fileEntry.isDirectory()) {
+                listFilesForFolder(fileEntry);
+            } else {
+                files.add(fileEntry.getName());
+            }
+        }
+        return files;
     }
 }
