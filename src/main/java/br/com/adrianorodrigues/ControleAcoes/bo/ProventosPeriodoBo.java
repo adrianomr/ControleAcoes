@@ -9,7 +9,7 @@ import java.util.Date;
 import java.util.stream.Collectors;
 
 public class ProventosPeriodoBo {
-    public static ArrayList<Provento> getProventosPeriodo(final Date dataInicial, final Date dataFinal, Integer idPapel) throws ParseException {
+    public static ArrayList<Provento> getProventosPeriodo(final Date dataInicial, final Date dataFinal, Long idPapel) throws ParseException {
         ArrayList<Provento> proventos = ProventosUtil.getProventos().get(idPapel);
         proventos =
                 (ArrayList<Provento>) proventos

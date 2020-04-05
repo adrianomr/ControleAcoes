@@ -3,13 +3,13 @@ package br.com.adrianorodrigues.ControleAcoes.model;
 import java.util.HashMap;
 
 public class Carteira {
-    private HashMap<Integer, Acao> acaoes = new HashMap();
+    private HashMap<Long, Acao> acaoes = new HashMap();
 
-    public HashMap<Integer, Acao> getAcaoes() {
+    public HashMap<Long, Acao> getAcaoes() {
         return acaoes;
     }
 
-    public void setAcaoes(HashMap<Integer, Acao> acaoes) {
+    public void setAcaoes(HashMap<Long, Acao> acaoes) {
         this.acaoes = acaoes;
     }
 

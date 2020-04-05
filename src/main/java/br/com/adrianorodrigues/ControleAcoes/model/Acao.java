@@ -1,12 +1,21 @@
 package br.com.adrianorodrigues.ControleAcoes.model;
 
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "acao")
 public class Acao {
-    private int id;
+    @Id
+    @GeneratedValue
+    private long id;
+    @Column(columnDefinition = "varchar(100)")
     private String papel;
+    @Column(columnDefinition = "varchar(100)")
     private String nomeEmpresa;
+    @Column(columnDefinition = "numeric(20)")
     private int quantidade;
+    @Column(columnDefinition = "numeric(20,4)")
     private BigDecimal valor;
 
     public Acao(int id, String papel, String nomeEmpresa, int quantidade, BigDecimal valor) {
@@ -21,11 +30,11 @@ public class Acao {
         this.id = id;
     }
 
-    public int getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(long id) {
         this.id = id;
     }
 

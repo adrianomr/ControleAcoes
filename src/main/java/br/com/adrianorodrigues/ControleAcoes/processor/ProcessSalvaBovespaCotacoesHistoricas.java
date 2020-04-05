@@ -1,7 +1,6 @@
 package br.com.adrianorodrigues.ControleAcoes.processor;
 
 import br.com.adrianorodrigues.ControleAcoes.builder.CotacoesBovespaDtoBuilder;
-import br.com.adrianorodrigues.ControleAcoes.client.CotacaoCliente;
 import br.com.adrianorodrigues.ControleAcoes.util.FileUtil;
 
 import java.io.File;
@@ -18,7 +17,7 @@ import static br.com.adrianorodrigues.ControleAcoes.util.ConcurrencyUtils.stop;
 public class ProcessSalvaBovespaCotacoesHistoricas {
     public static int execute() {
         List<String> files = FileUtil.listFilesForFolder(new File("src/main/resources/cotacoes/txt"));
-        ExecutorService executor = Executors.newFixedThreadPool(4);
+        ExecutorService executor = Executors.newFixedThreadPool(2);
         AtomicInteger atomicInt = new AtomicInteger(0);
         int anoAtual = Calendar.getInstance().get(Calendar.YEAR);
         IntStream.range(0, files.size())
