@@ -7,7 +7,7 @@ public class CotacoesBovespaDtoBuilder {
         CotacoesBovespaDto cotacoesBovespaDto = new CotacoesBovespaDto();
         cotacoesBovespaDto
                 .setTipoRegistro(Integer.parseInt(linhaArquivo.substring(0, 2)))
-                .setData(linhaArquivo.substring(2, 10).trim())
+                .setData(linhaArquivo.substring(2, 6).trim() + "/" + linhaArquivo.substring(6, 8).trim() + "/" + linhaArquivo.substring(8, 10).trim())
                 .setCodigoBdi(linhaArquivo.substring(10, 12).trim())
                 .setCodNegociacaoPapel(linhaArquivo.substring(12, 24).trim())
                 .setTipoMercado(Integer.parseInt(linhaArquivo.substring(24, 27).trim()))

@@ -6,7 +6,7 @@ import java.util.Date;
 
 public class DateFromStringUtil {
     public static Date getDate(String data) throws ParseException {
-        SimpleDateFormat sdf1= new SimpleDateFormat("dd/MM/yyyy"); //voc� pode usar outras m�scaras
+        SimpleDateFormat sdf1 = new SimpleDateFormat("dd/MM/yyyy");
         return sdf1.parse(data);
     }
 }

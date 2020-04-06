@@ -1,6 +1,7 @@
 package br.com.adrianorodrigues.ControleAcoes.model;
 
 import javax.persistence.*;
+import java.util.Date;
 
 @Entity
 @Table(name = "cotacao")
@@ -8,6 +9,9 @@ public class Cotacao {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Column
+    private Date data;
 
     @Column(columnDefinition = "numeric(20,4)")
     private Double valorFechamento;
@@ -38,5 +42,23 @@ public class Cotacao {
 
     public void setAcao(Acao acao) {
         this.acao = acao;
+    }
+
+    public Date getData() {
+        return data;
+    }
+
+    public void setData(Date data) {
+        this.data = data;
+    }
+
+    @Override
+    public String toString() {
+        return "Cotacao{" +
+                "id=" + id +
+                ", data=" + data +
+                ", valorFechamento=" + valorFechamento +
+                ", acao=" + acao +
+                '}';
     }
 }
