@@ -30,6 +30,10 @@ public class Acao {
         this.id = id;
     }
 
+    public Acao() {
+
+    }
+
     public long getId() {
         return id;
     }
