@@ -3,10 +3,15 @@ package br.com.adrianorodrigues.ControleAcoes.processor;
 import br.com.adrianorodrigues.ControleAcoes.builder.AcaoFromCotacoesBovespaBuilder;
 import br.com.adrianorodrigues.ControleAcoes.builder.CotacaoFromCotacoesBovespaBuilder;
 import br.com.adrianorodrigues.ControleAcoes.builder.CotacoesBovespaDtoBuilder;
+import br.com.adrianorodrigues.ControleAcoes.dto.ArrayListCotacaoDto;
 import br.com.adrianorodrigues.ControleAcoes.dto.CotacoesBovespaDto;
+import br.com.adrianorodrigues.ControleAcoes.dto.HashMapAcaoDto;
 import br.com.adrianorodrigues.ControleAcoes.model.Acao;
 import br.com.adrianorodrigues.ControleAcoes.model.Cotacao;
+import br.com.adrianorodrigues.ControleAcoes.service.AcaoService;
 import br.com.adrianorodrigues.ControleAcoes.util.FileUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
@@ -20,8 +25,12 @@ import java.util.stream.IntStream;
 
 import static br.com.adrianorodrigues.ControleAcoes.util.ConcurrencyUtils.stop;
 
+@Component
 public class ProcessSalvaBovespaCotacoesHistoricas {
-    public static int execute() {
+    @Autowired
+    private AcaoService acaoService;
+
+    public int execute() {
         List<String> files = FileUtil.listFilesForFolder(new File("src/main/resources/cotacoes/txt"));
         ExecutorService executor = Executors.newFixedThreadPool(2);
         AtomicInteger atomicInt = new AtomicInteger(0);
@@ -34,9 +43,10 @@ public class ProcessSalvaBovespaCotacoesHistoricas {
                             String data = FileUtil.readFile("src/main/resources/cotacoes/txt/" + files.get(i));
                             String[] cotacoes = data.split("\n");
                             for (int x = 1; x < cotacoes.length - 1; x++) {
-                                CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build(cotacoes[i]);
+                                CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build(cotacoes[x]);
                                 Acao acao = AcaoFromCotacoesBovespaBuilder.build(cotacoesBovespaDto);
-                                Cotacao cotacao = CotacaoFromCotacoesBovespaBuilder.build(acao, cotacoesBovespaDto);
+                                Cotacao cotacao = CotacaoFromCotacoesBovespaBuilder.build(HashMapAcaoDto.getHashAcaoDto().putIfAbsent(acao.getPapel(), acao), cotacoesBovespaDto);
+                                ArrayListCotacaoDto.getArrayListCotacaoDto().add(cotacao);
                             }
                             atomicInt.addAndGet(1);
                         } catch (IOException | ParseException e) {
@@ -47,6 +57,8 @@ public class ProcessSalvaBovespaCotacoesHistoricas {
                     executor.submit(task);
                 });
         stop(executor);
+//        AcaoService acaoService = new AcaoService();
+        acaoService.insertMapAcao(HashMapAcaoDto.getHashAcaoDto());
         System.out.println(atomicInt.get());
         return atomicInt.get();
     }

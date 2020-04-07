@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 public class Acao {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
     @Column(columnDefinition = "varchar(100)")
     private String papel;
     @Column(columnDefinition = "varchar(100)")
@@ -18,7 +18,7 @@ public class Acao {
     @Column(columnDefinition = "numeric(20,4)")
     private BigDecimal valor;
 
-    public Acao(int id, String papel, String nomeEmpresa, int quantidade, BigDecimal valor) {
+    public Acao(Long id, String papel, String nomeEmpresa, int quantidade, BigDecimal valor) {
         this.id = id;
         this.papel = papel;
         this.nomeEmpresa = nomeEmpresa;
@@ -26,7 +26,7 @@ public class Acao {
         this.valor = valor;
     }
 
-    public Acao(int id) {
+    public Acao(Long id) {
         this.id = id;
     }
 
@@ -34,11 +34,11 @@ public class Acao {
 
     }
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

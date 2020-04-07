@@ -12,16 +12,16 @@ public class AcoesBolsaUtil {
     public static HashMap<String, Acao> getAcoes() {
         if(acoes == null){
             acoes = new HashMap<String, Acao>();
-            acoes.put("BCFF11",new Acao(1, "BCFF11", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
-            acoes.put("B3SA3", new Acao(2, "B3SA3", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
-            acoes.put("ABEV3", new Acao(3, "ABEV3", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
-            acoes.put("ITUB4", new Acao(4, "ITUB4", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
-            acoes.put("BIDI4", new Acao(5, "BIDI4", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
-            acoes.put("VIVT4", new Acao(6, "VIVT4", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
-            acoes.put("WIZS3", new Acao(7, "WIZS3", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
-            acoes.put("XPLG11", new Acao(8, "XPLG11", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
-            acoes.put("HGRE11", new Acao(9, "HGRE11", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
-            acoes.put("ITUB3", new Acao(10, "ITUB3", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("BCFF11", new Acao(1l, "BCFF11", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("B3SA3", new Acao(2l, "B3SA3", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("ABEV3", new Acao(3l, "ABEV3", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("ITUB4", new Acao(4l, "ITUB4", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("BIDI4", new Acao(5l, "BIDI4", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("VIVT4", new Acao(6l, "VIVT4", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("WIZS3", new Acao(7l, "WIZS3", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("XPLG11", new Acao(8l, "XPLG11", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("HGRE11", new Acao(9l, "HGRE11", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
+            acoes.put("ITUB3", new Acao(10l, "ITUB3", "BTG Fundo de Fundos", 8, new BigDecimal(99.50)));
         }
         return acoes;
     }

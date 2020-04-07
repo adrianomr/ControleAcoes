@@ -9,6 +9,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+
 @Component
 public class AcaoService {
 
@@ -34,6 +36,13 @@ public class AcaoService {
                     return ResponseEntity.ok().build();
                 }).orElseThrow(() -> new ResourceNotFoundException("Acao not found with id " + acaoId));
         return null;
+    }
+
+    public HashMap<String, Acao> insertMapAcao(HashMap<String, Acao> acaoHashMap) {
+        acaoHashMap.forEach((chave, acao) -> {
+            acao.setId(acaoRepository.save(acao).getId());
+        });
+        return acaoHashMap;
     }
 
     public Page<Acao> getAcaoList(Pageable pageable) {
