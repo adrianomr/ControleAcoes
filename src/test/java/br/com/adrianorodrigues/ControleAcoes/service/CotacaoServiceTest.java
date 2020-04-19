@@ -20,6 +20,9 @@ class CotacaoServiceTest {
     @Autowired
     CotacaoRepository cotacaoRepository;
 
+    @Autowired
+    CotacaoService cotacaoService;
+
     @Test
     void insertListCotacao() {
         Acao acao = new Acao();
@@ -34,5 +37,10 @@ class CotacaoServiceTest {
         cotacao.setAcao(acao);
         cotacaoRepository.saveAndFlush(cotacao);
         System.out.println(cotacao);
+    }
+
+    @Test
+    void getCotacaoAtual() {
+        System.out.println(cotacaoService.getCotacaoAtual(4052200l));
     }
 }

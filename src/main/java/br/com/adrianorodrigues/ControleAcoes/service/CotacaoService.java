@@ -1,5 +1,6 @@
 package br.com.adrianorodrigues.ControleAcoes.service;
 
+import br.com.adrianorodrigues.ControleAcoes.dto.ArrayListCotacaoDto;
 import br.com.adrianorodrigues.ControleAcoes.dto.HashMapAcaoDto;
 import br.com.adrianorodrigues.ControleAcoes.exception.ResourceNotFoundException;
 import br.com.adrianorodrigues.ControleAcoes.model.Cotacao;
@@ -47,5 +48,12 @@ public class CotacaoService {
             cotacao.setAcao(HashMapAcaoDto.getHashAcaoDto().get(cotacao.getAcao().getPapel()));
         }
         cotacaoRepository.saveAll(cotacaoArrayList);
+        HashMapAcaoDto.limpaLista();
+        ArrayListCotacaoDto.limpaLista();
+        cotacaoRepository.flush();
+    }
+
+    public Cotacao getCotacaoAtual(Long idAcao) {
+        return cotacaoRepository.getCotacaoAtual(idAcao);
     }
 }

@@ -11,4 +11,7 @@ public class HashMapAcaoDto {
         return hashAcaoDto;
     }
 
+    public static void limpaLista() {
+        hashAcaoDto = null;
+    }
 }

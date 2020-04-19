@@ -11,4 +11,7 @@ public class ArrayListCotacaoDto {
         return arrayListCotacaoDto;
     }
 
+    public static void limpaLista() {
+        arrayListCotacaoDto = null;
+    }
 }
