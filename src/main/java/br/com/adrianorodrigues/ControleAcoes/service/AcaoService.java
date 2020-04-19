@@ -39,11 +39,12 @@ public class AcaoService {
     }
 
     public HashMap<String, Acao> insertMapAcao(HashMap<String, Acao> acaoHashMap) {
-        acaoHashMap.forEach((chave, acao) -> {
-            acao.setId(acaoRepository.save(acao).getId());
-        });
+        for (String papel : acaoHashMap.keySet()) {
+            acaoRepository.saveAndFlush(acaoHashMap.get(papel));
+        }
         return acaoHashMap;
     }
+    //https://howtodoinjava.com/hibernate/hibernate-criteria-queries-tutorial/
 
     public Page<Acao> getAcaoList(Pageable pageable) {
         return acaoRepository.findAll(pageable);

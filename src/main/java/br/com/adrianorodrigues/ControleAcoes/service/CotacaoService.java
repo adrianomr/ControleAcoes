@@ -1,5 +1,6 @@
 package br.com.adrianorodrigues.ControleAcoes.service;
 
+import br.com.adrianorodrigues.ControleAcoes.dto.HashMapAcaoDto;
 import br.com.adrianorodrigues.ControleAcoes.exception.ResourceNotFoundException;
 import br.com.adrianorodrigues.ControleAcoes.model.Cotacao;
 import br.com.adrianorodrigues.ControleAcoes.repository.CotacaoRepository;
@@ -8,6 +9,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
 
 @Component
 public class CotacaoService {
@@ -37,5 +40,12 @@ public class CotacaoService {
 
     public Page<Cotacao> getCotacaoList(Pageable pageable) {
         return cotacaoRepository.findAll(pageable);
+    }
+
+    public void insertListCotacao(ArrayList<Cotacao> cotacaoArrayList) {
+        for (Cotacao cotacao : cotacaoArrayList) {
+            cotacao.setAcao(HashMapAcaoDto.getHashAcaoDto().get(cotacao.getAcao().getPapel()));
+        }
+        cotacaoRepository.saveAll(cotacaoArrayList);
     }
 }
