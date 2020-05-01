@@ -45,10 +45,13 @@ public class CotacaoService {
 
     public void insertListCotacao(ArrayList<Cotacao> cotacaoArrayList) {
         for (Cotacao cotacao : cotacaoArrayList) {
-            cotacao.setAcao(HashMapAcaoDto.getHashAcaoDto().get(cotacao.getAcao().getPapel()));
+            try {
+                cotacao.setAcao(HashMapAcaoDto.getHashAcaoDto().get(cotacao.getAcao().getPapel()));
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
         cotacaoRepository.saveAll(cotacaoArrayList);
-        HashMapAcaoDto.limpaLista();
         ArrayListCotacaoDto.limpaLista();
         cotacaoRepository.flush();
     }

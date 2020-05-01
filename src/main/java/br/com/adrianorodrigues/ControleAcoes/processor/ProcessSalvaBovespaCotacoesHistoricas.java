@@ -21,6 +21,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Semaphore;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.IntStream;
 
@@ -32,6 +33,7 @@ public class ProcessSalvaBovespaCotacoesHistoricas {
     private AcaoService acaoService;
     @Autowired
     private CotacaoService cotacaoService;
+    Semaphore semaphore = new Semaphore(1);
 
     public int execute() {
         List<String> files = FileUtil.listFilesForFolder(new File("src/main/resources/cotacoes/txt"));
@@ -48,14 +50,21 @@ public class ProcessSalvaBovespaCotacoesHistoricas {
                             for (int x = 1; x < cotacoes.length - 1; x++) {
                                 CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build(cotacoes[x]);
                                 Acao acao = AcaoFromCotacoesBovespaBuilder.build(cotacoesBovespaDto);
-                                if (!HashMapAcaoDto.getHashAcaoDto().containsKey(acao.getPapel()))
+                                semaphore.acquire();
+                                if (!HashMapAcaoDto.getHashAcaoDto().containsKey(acao.getPapel())) {
+                                    acaoService.insertAcao(acao);
                                     HashMapAcaoDto.getHashAcaoDto().put(acao.getPapel(), acao);
+                                }
                                 Cotacao cotacao = CotacaoFromCotacoesBovespaBuilder.build(HashMapAcaoDto.getHashAcaoDto().get(acao.getPapel()), cotacoesBovespaDto);
+                                semaphore.release();
                                 if (cotacao != null && acao != null)
-                                    ArrayListCotacaoDto.getArrayListCotacaoDto().add(cotacao);
+                                    cotacaoService.insertCotacao(cotacao);
+
                             }
                             atomicInt.addAndGet(1);
                         } catch (IOException | ParseException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
                             e.printStackTrace();
                         }
                         System.out.println("Finished task " + i);
@@ -63,10 +72,9 @@ public class ProcessSalvaBovespaCotacoesHistoricas {
                     executor.submit(task);
                 });
         stop(executor);
-//        AcaoService acaoService = new AcaoService();
-        acaoService.insertMapAcao(HashMapAcaoDto.getHashAcaoDto());
         System.out.println("HASHMAPSIZE: " + HashMapAcaoDto.getHashAcaoDto().size());
         cotacaoService.insertListCotacao(ArrayListCotacaoDto.getArrayListCotacaoDto());
+        HashMapAcaoDto.limpaLista();
         System.out.println(atomicInt.get());
         return atomicInt.get();
     }
