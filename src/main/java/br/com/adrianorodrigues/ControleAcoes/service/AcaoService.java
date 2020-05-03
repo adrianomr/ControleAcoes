@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.List;
 
 @Component
 public class AcaoService {
@@ -44,6 +45,11 @@ public class AcaoService {
         }
         acaoRepository.flush();
         return acaoHashMap;
+    }
+
+    public void insertListAcao(List<Acao> acaoList) {
+        acaoRepository.saveAll(acaoList);
+        acaoRepository.flush();
     }
 
     public Page<Acao> getAcaoList(Pageable pageable) {

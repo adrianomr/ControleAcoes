@@ -12,6 +12,6 @@ public class ArrayListCotacaoDto {
     }
 
     public static void limpaLista() {
-        arrayListCotacaoDto = null;
+        arrayListCotacaoDto = new ArrayList<>();
     }
 }
