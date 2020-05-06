@@ -31,7 +31,7 @@ public class CotacaoCliente {
 
     public static boolean getCotacaoDia() {
         Date dataAtual = new Date();
-        SimpleDateFormat x = new SimpleDateFormat("DDmmYYY");
+        SimpleDateFormat x = new SimpleDateFormat("ddMMyyy");
         try (BufferedInputStream in = new BufferedInputStream(new URL("http://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_D" + x.format(dataAtual) + ".ZIP").openStream());
              FileOutputStream fileOutputStream = new FileOutputStream("src/main/resources/cotacoes/zip/COTAHIST_DIA.ZIP")) {
             byte[] dataBuffer = new byte[1024];

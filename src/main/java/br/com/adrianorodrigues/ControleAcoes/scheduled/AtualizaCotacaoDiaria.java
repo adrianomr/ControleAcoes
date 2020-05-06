@@ -22,9 +22,9 @@ public class AtualizaCotacaoDiaria {
     //Executa função de 15 em 15 min
     @Scheduled(fixedDelay = 900000, initialDelay = 1000)
     public void atualizaCotacoesDiarias() {
-        //todo: testar funcao
         if (StatusInicializacaoSingleton.getSingleton().isInicializou()) {
             processed.set(true);
+            //Todo: criar funcao para limpar a pasta.
             ProcessDownloadBovespaCotacoesHistoricasDia.execute();
             ProcessUnzipBovespaCotacoesHistoricas.execute();
             processSalvaAcoesHistoricasSequencial.execute();
