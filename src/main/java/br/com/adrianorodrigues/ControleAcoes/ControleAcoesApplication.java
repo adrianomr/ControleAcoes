@@ -1,5 +1,6 @@
 package br.com.adrianorodrigues.ControleAcoes;
 
+import br.com.adrianorodrigues.ControleAcoes.dto.StatusInicializacaoSingleton;
 import br.com.adrianorodrigues.ControleAcoes.processor.ProcessDownloadBovespaCotacoesHistoricas;
 import br.com.adrianorodrigues.ControleAcoes.processor.ProcessSalvaAcoesHistoricasSequencial;
 import br.com.adrianorodrigues.ControleAcoes.processor.ProcessSalvaBovespaCotacoesHistoricasSequencial;
@@ -28,6 +29,7 @@ public class ControleAcoesApplication {
 			ProcessUnzipBovespaCotacoesHistoricas.execute();
 			processSalvaAcoesHistoricasSequencial.execute();
 			processSalvaBovespaCotacoesHistoricasSequencial.execute();
+			StatusInicializacaoSingleton.getSingleton().setInicializou();
 		};
 	}
 
