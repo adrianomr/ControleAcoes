@@ -1,0 +1,10 @@
+package br.com.adrianorodrigues.controleacoes.repository;
+
+import br.com.adrianorodrigues.controleacoes.model.Acao;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface AcaoRepository extends JpaRepository<Acao, Long> {
+    List<Acao> findByCodigoBdiInAndTipoMercado(List<String> codigoBdi, Integer tipoMercado);
+}
