@@ -55,7 +55,7 @@ public class FileUtil {
     }
 
     public static List<String> listFilesForFolder(final String folderName) {
-        File folder = getFolderCreateIfNotExists(PATH + folderName);
+        File folder = getFolderCreateIfNotExists(folderName);
         return listFilesForFolder(folder);
     }
 
