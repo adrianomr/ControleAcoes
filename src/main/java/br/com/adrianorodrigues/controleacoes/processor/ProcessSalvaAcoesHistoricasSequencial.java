@@ -25,7 +25,7 @@ public class ProcessSalvaAcoesHistoricasSequencial {
         for (int i = 0; i < files.size(); i++) {
             System.out.println("Running task " + i);
             try {
-                String data = FileUtil.readFile(folderName + files.get(i));
+                String data = FileUtil.readFile(folderName + "/" + files.get(i));
                 String[] cotacoes = data.split("\n");
                 for (int x = 1; x < cotacoes.length - 1; x++) {
                     CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build(cotacoes[x]);

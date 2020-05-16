@@ -26,12 +26,12 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
     private CotacaoService cotacaoService;
 
     public int execute() {
-        String FOLDER_NAME = "/cotacoes/txt";
-        List<String> files = FileUtil.listFilesForFolder(FOLDER_NAME);
+        String folderName = "/cotacoes/txt";
+        List<String> files = FileUtil.listFilesForFolder(folderName);
         for (int i = 0; i < files.size(); i++) {
             System.out.println("Running task " + i);
             try {
-                String data = FileUtil.readFile(FOLDER_NAME + files.get(i));
+                String data = FileUtil.readFile(folderName + "/" + files.get(i));
                 String[] cotacoes = data.split("\n");
                 for (int x = 1; x < cotacoes.length - 1; x++) {
                     CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build(cotacoes[x]);
