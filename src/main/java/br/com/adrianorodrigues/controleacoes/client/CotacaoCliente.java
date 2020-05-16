@@ -1,5 +1,6 @@
 package br.com.adrianorodrigues.controleacoes.client;
 
+import br.com.adrianorodrigues.controleacoes.util.FileUtil;
 import br.com.adrianorodrigues.controleacoes.util.LogUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,7 +16,7 @@ public class CotacaoCliente {
     private final Logger logger = LoggerFactory.getLogger(getClass());
     public static boolean getCotacoes(int ano){
         try (BufferedInputStream in = new BufferedInputStream(new URL("http://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A" + ano + ".ZIP").openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream("src/main/resources/cotacoes/zip/COTAHIST_A" + ano + ".ZIP")) {
+             FileOutputStream fileOutputStream = new FileOutputStream(FileUtil.getFolderCreateIfNotExists("/cotacoes/zip") + "/COTAHIST_A" + ano + ".ZIP")) {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
@@ -33,7 +34,7 @@ public class CotacaoCliente {
         Date dataAtual = new Date();
         SimpleDateFormat x = new SimpleDateFormat("ddMMyyy");
         try (BufferedInputStream in = new BufferedInputStream(new URL("http://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_D" + x.format(dataAtual) + ".ZIP").openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream("src/main/resources/cotacoes/zip/COTAHIST_DIA.ZIP")) {
+             FileOutputStream fileOutputStream = new FileOutputStream(FileUtil.getFolderCreateIfNotExists("/cotacoes/zip") + "/COTAHIST_DIA.ZIP")) {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {

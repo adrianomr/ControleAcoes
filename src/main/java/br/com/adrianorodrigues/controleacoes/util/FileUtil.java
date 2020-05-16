@@ -5,18 +5,38 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileUtil {
-    public static void DeleteFiles(String filePath){
+
+    public static final String PATH = System.getProperty("user.dir") + "/tmp";
+
+    public static void createFolderIfNotExists(File folder) {
+        if (!folder.exists()) {
+            folder.mkdirs();
+        }
+    }
+
+    public static File getFolderCreateIfNotExists(String path) {
+        File file = new File(PATH + path);
+        createFolderIfNotExists(file);
+        return file;
+    }
+
+    public static File getFileCreateIfNotExists(String path) {
+        File file = new File(PATH + path);
+        getFolderCreateIfNotExists(file.getPath().replace(file.getName(), ""));
+        return file;
+    }
+
+    public static void DeleteFiles(String filePath) {
         File index = new File(filePath);
-        String[]entries = index.list();
-        for(String s: entries){
-            File currentFile = new File(index.getPath(),s);
+        String[] entries = index.list();
+        for (String s : entries) {
+            File currentFile = new File(index.getPath(), s);
             currentFile.delete();
         }
     }
 
     public static String readFile(String filePath) throws IOException {
-        Class clazz = FileUtil.class;
-        InputStream inputStream = new FileInputStream(filePath);
+        InputStream inputStream = new FileInputStream(PATH + filePath);
         String data = readFromInputStream(inputStream);
         return data;
     }
@@ -34,7 +54,12 @@ public class FileUtil {
         return resultStringBuilder.toString();
     }
 
-    public static List<String> listFilesForFolder(final File folder) {
+    public static List<String> listFilesForFolder(final String folderName) {
+        File folder = getFolderCreateIfNotExists(PATH + folderName);
+        return listFilesForFolder(folder);
+    }
+
+    private static List<String> listFilesForFolder(final File folder) {
         List<String> files = new ArrayList<>();
         for (final File fileEntry : folder.listFiles()) {
             if (fileEntry.isDirectory()) {

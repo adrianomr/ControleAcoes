@@ -14,7 +14,6 @@ import br.com.adrianorodrigues.controleacoes.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.Calendar;
@@ -36,7 +35,7 @@ public class ProcessSalvaBovespaCotacoesHistoricas {
     Semaphore semaphore = new Semaphore(1);
 
     public int execute() {
-        List<String> files = FileUtil.listFilesForFolder(new File("src/main/resources/cotacoes/txt"));
+        List<String> files = FileUtil.listFilesForFolder("/cotacoes/txt");
         ExecutorService executor = Executors.newFixedThreadPool(2);
         AtomicInteger atomicInt = new AtomicInteger(0);
         int anoAtual = Calendar.getInstance().get(Calendar.YEAR);
@@ -45,7 +44,7 @@ public class ProcessSalvaBovespaCotacoesHistoricas {
                     Runnable task = () -> {
                         System.out.println("Running task " + i);
                         try {
-                            String data = FileUtil.readFile("src/main/resources/cotacoes/txt/" + files.get(i));
+                            String data = FileUtil.readFile("/cotacoes/txt/" + files.get(i));
                             String[] cotacoes = data.split("\n");
                             for (int x = 1; x < cotacoes.length - 1; x++) {
                                 CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build(cotacoes[x]);

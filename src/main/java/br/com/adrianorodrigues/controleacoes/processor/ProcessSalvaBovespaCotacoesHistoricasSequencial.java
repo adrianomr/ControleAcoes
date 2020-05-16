@@ -14,7 +14,6 @@ import br.com.adrianorodrigues.controleacoes.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
@@ -27,11 +26,12 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
     private CotacaoService cotacaoService;
 
     public int execute() {
-        List<String> files = FileUtil.listFilesForFolder(new File("src/main/resources/cotacoes/txt"));
+        String FOLDER_NAME = "/cotacoes/txt";
+        List<String> files = FileUtil.listFilesForFolder(FOLDER_NAME);
         for (int i = 0; i < files.size(); i++) {
             System.out.println("Running task " + i);
             try {
-                String data = FileUtil.readFile("src/main/resources/cotacoes/txt/" + files.get(i));
+                String data = FileUtil.readFile(FOLDER_NAME + files.get(i));
                 String[] cotacoes = data.split("\n");
                 for (int x = 1; x < cotacoes.length - 1; x++) {
                     CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build(cotacoes[x]);

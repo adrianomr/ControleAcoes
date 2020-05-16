@@ -10,7 +10,6 @@ import br.com.adrianorodrigues.controleacoes.util.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,14 +18,14 @@ import java.util.List;
 public class ProcessSalvaAcoesHistoricasSequencial {
     @Autowired
     private AcaoService acaoService;
-
     public int execute() {
-        List<String> files = FileUtil.listFilesForFolder(new File("src/main/resources/cotacoes/txt"));
+        String folderName = "/cotacoes/txt";
+        List<String> files = FileUtil.listFilesForFolder(folderName);
         ArrayList<Acao> loteAcoes = new ArrayList<Acao>();
         for (int i = 0; i < files.size(); i++) {
             System.out.println("Running task " + i);
             try {
-                String data = FileUtil.readFile("src/main/resources/cotacoes/txt/" + files.get(i));
+                String data = FileUtil.readFile(folderName + files.get(i));
                 String[] cotacoes = data.split("\n");
                 for (int x = 1; x < cotacoes.length - 1; x++) {
                     CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build(cotacoes[x]);
