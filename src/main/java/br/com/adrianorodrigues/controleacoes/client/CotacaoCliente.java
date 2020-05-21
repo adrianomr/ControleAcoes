@@ -14,9 +14,11 @@ import java.util.Date;
 
 public class CotacaoCliente {
     private final Logger logger = LoggerFactory.getLogger(getClass());
+
     public static boolean getCotacoes(int ano){
+        FileUtil fileUtil = new FileUtil();
         try (BufferedInputStream in = new BufferedInputStream(new URL("http://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_A" + ano + ".ZIP").openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream(FileUtil.getFolderCreateIfNotExists("/cotacoes/zip") + "/COTAHIST_A" + ano + ".ZIP")) {
+             FileOutputStream fileOutputStream = new FileOutputStream(fileUtil.getFolderCreateIfNotExists("/cotacoes/zip") + "/COTAHIST_A" + ano + ".ZIP")) {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
@@ -31,10 +33,11 @@ public class CotacaoCliente {
     }
 
     public static boolean getCotacaoDia() {
+        FileUtil fileUtil = new FileUtil();
         Date dataAtual = new Date();
         SimpleDateFormat x = new SimpleDateFormat("ddMMyyy");
         try (BufferedInputStream in = new BufferedInputStream(new URL("http://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_D" + x.format(dataAtual) + ".ZIP").openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream(FileUtil.getFolderCreateIfNotExists("/cotacoes/zip") + "/COTAHIST_DIA.ZIP")) {
+             FileOutputStream fileOutputStream = new FileOutputStream(fileUtil.getFolderCreateIfNotExists("/cotacoes/zip") + "/COTAHIST_DIA.ZIP")) {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {

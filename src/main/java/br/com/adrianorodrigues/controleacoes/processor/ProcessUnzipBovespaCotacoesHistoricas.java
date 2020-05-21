@@ -22,7 +22,8 @@ public class ProcessUnzipBovespaCotacoesHistoricas {
                 .forEach(i -> {
                     Runnable task = () -> {
                         try {
-                            ZipUtil.Unzip(FileUtil.getFolderCreateIfNotExists("/cotacoes/zip").getPath() + "/COTAHIST_A" + i + ".ZIP", FileUtil.getFolderCreateIfNotExists("/cotacoes/txt").getPath());
+                            FileUtil fileUtil = new FileUtil();
+                            ZipUtil.Unzip(fileUtil.getFolderCreateIfNotExists("/cotacoes/zip").getPath() + "/COTAHIST_A" + i + ".ZIP", fileUtil.getFolderCreateIfNotExists("/cotacoes/txt").getPath());
                             atomicInt.addAndGet(1);
                         } catch (IOException e) {
                             e.printStackTrace();

@@ -5,7 +5,7 @@ import br.com.adrianorodrigues.controleacoes.builder.CotacaoFromCotacoesBovespaB
 import br.com.adrianorodrigues.controleacoes.builder.CotacoesBovespaDtoBuilder;
 import br.com.adrianorodrigues.controleacoes.dto.ArrayListCotacaoDto;
 import br.com.adrianorodrigues.controleacoes.dto.CotacoesBovespaDto;
-import br.com.adrianorodrigues.controleacoes.dto.HashMapAcaoDto;
+import br.com.adrianorodrigues.controleacoes.interfaces.ICallback;
 import br.com.adrianorodrigues.controleacoes.model.Acao;
 import br.com.adrianorodrigues.controleacoes.model.Cotacao;
 import br.com.adrianorodrigues.controleacoes.service.AcaoService;
@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -24,35 +25,45 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
     private AcaoService acaoService;
     @Autowired
     private CotacaoService cotacaoService;
+    @Autowired
+    FileUtil fileUtil;
+    private ArrayList<Cotacao> cotacaoArrayList = new ArrayList<>();
+    private boolean primeiraLinha = true;
 
     public int execute() {
         String folderName = "/cotacoes/txt";
-        List<String> files = FileUtil.listFilesForFolder(folderName);
+        List<String> files = fileUtil.listFilesForFolder(folderName);
         for (int i = 0; i < files.size(); i++) {
-            System.out.println("Running task " + i);
             try {
-                String data = FileUtil.readFile(folderName + "/" + files.get(i));
-                String[] cotacoes = data.split("\n");
-                for (int x = 1; x < cotacoes.length - 1; x++) {
-                    CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build(cotacoes[x]);
-                    Acao acao = AcaoFromCotacoesBovespaBuilder.build(cotacoesBovespaDto);
-                    Cotacao cotacao = CotacaoFromCotacoesBovespaBuilder.build(HashMapAcaoDto.getHashAcaoDto().get(acao.getPapel()), cotacoesBovespaDto);
-                    if (cotacao != null && acao != null) {
-                        ArrayListCotacaoDto.getArrayListCotacaoDto().add(cotacao);
-                        if (ArrayListCotacaoDto.getArrayListCotacaoDto().size() == 1000) {
-                            cotacaoService.insertListCotacao(ArrayListCotacaoDto.getArrayListCotacaoDto());
-                        }
-                    }
-
-                }
-            } catch (IOException | ParseException e) {
+                fileUtil.readFile(folderName + "/" + files.get(i), new Callback());
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            System.out.println("Finished task " + i);
         }
-        System.out.println("HASHMAPSIZE: " + HashMapAcaoDto.getHashAcaoDto().size());
-        cotacaoService.insertListCotacao(ArrayListCotacaoDto.getArrayListCotacaoDto());
-        HashMapAcaoDto.limpaLista();
+        cotacaoService.insertListCotacao(cotacaoArrayList);
+        cotacaoArrayList = null;
         return files.size();
+    }
+
+    private class Callback implements ICallback {
+
+        @Override
+        public void callback(Object result) {
+            try {
+                if (primeiraLinha == false) {
+                    CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build((String) result);
+                    Acao acao = AcaoFromCotacoesBovespaBuilder.build(cotacoesBovespaDto);
+                    Cotacao cotacao = CotacaoFromCotacoesBovespaBuilder.build(acao, cotacoesBovespaDto);
+                    cotacaoArrayList.add(cotacao);
+                    if (ArrayListCotacaoDto.getArrayListCotacaoDto().size() == 1000) {
+                        cotacaoService.insertListCotacao(cotacaoArrayList);
+                        cotacaoArrayList = new ArrayList<>();
+                    }
+                } else
+                    primeiraLinha = false;
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 }
