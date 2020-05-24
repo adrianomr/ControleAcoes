@@ -24,8 +24,8 @@ public class InicializacaoConfig {
                 ProcessUnzipBovespaCotacoesHistoricas.execute();
                 processSalvaAcoesHistoricasSequencial.execute();
                 processSalvaBovespaCotacoesHistoricasSequencial.execute();
-                StatusInicializacaoSingleton.getSingleton().setInicializou();
             }
+            StatusInicializacaoSingleton.getSingleton().setInicializou();
         };
     }
 }
