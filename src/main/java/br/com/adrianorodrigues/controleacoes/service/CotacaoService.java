@@ -1,6 +1,5 @@
 package br.com.adrianorodrigues.controleacoes.service;
 
-import br.com.adrianorodrigues.controleacoes.dto.HashMapAcaoDto;
 import br.com.adrianorodrigues.controleacoes.exception.ResourceNotFoundException;
 import br.com.adrianorodrigues.controleacoes.model.Cotacao;
 import br.com.adrianorodrigues.controleacoes.repository.CotacaoRepository;
@@ -43,13 +42,6 @@ public class CotacaoService {
     }
 
     public void insertListCotacao(ArrayList<Cotacao> cotacaoArrayList) {
-        for (Cotacao cotacao : cotacaoArrayList) {
-            try {
-                cotacao.setAcao(HashMapAcaoDto.getHashAcaoDto().get(cotacao.getAcao().getPapel()));
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
         cotacaoRepository.saveAll(cotacaoArrayList);
         cotacaoRepository.flush();
     }
