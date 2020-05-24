@@ -9,10 +9,11 @@ import java.text.ParseException;
 
 public class CotacaoFromCotacoesBovespaBuilder {
     public static Cotacao build(Acao acao, CotacoesBovespaDto cotacoesBovespaDto) throws ParseException {
-        Cotacao cotacao = new Cotacao();
-        cotacao.setAcao(acao);
-        cotacao.setValorFechamento(cotacoesBovespaDto.getPrecoUltimoNegocio());
-        cotacao.setData(DateFromStringUtil.getDate(cotacoesBovespaDto.getData()));
-        return cotacao;
+        return Cotacao
+                .builder()
+                .papel(acao.getPapel())
+                .valorFechamento(cotacoesBovespaDto.getPrecoUltimoNegocio())
+                .data(DateFromStringUtil.getDate(cotacoesBovespaDto.getData()))
+                .build();
     }
 }
