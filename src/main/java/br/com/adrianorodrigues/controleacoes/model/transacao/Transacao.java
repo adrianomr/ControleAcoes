@@ -7,8 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
 @Data
@@ -18,8 +17,14 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "transacao")
 public class Transacao {
+    @Id
+    @GeneratedValue
     private int id;
+    @ManyToOne
+    @JoinColumn(name = "acao_id")
     private Acao acao;
+    @Column
     private TipoTransacao tipoTransacao;
+    @Column
     private BigDecimal valor;
 }

@@ -11,6 +11,7 @@ import br.com.adrianorodrigues.controleacoes.model.Cotacao;
 import br.com.adrianorodrigues.controleacoes.service.AcaoService;
 import br.com.adrianorodrigues.controleacoes.service.CotacaoService;
 import br.com.adrianorodrigues.controleacoes.util.FileUtil;
+import br.com.adrianorodrigues.controleacoes.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,6 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
     @Autowired
     FileUtil fileUtil;
     private ArrayList<Cotacao> cotacaoArrayList = new ArrayList<>();
-    private boolean primeiraLinha = true;
 
     public int execute() {
         String folderName = "/cotacoes/txt";
@@ -37,7 +37,7 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
             try {
                 fileUtil.readFile(folderName + "/" + files.get(i), new Callback());
             } catch (IOException e) {
-                e.printStackTrace();
+                LogUtil.getLogger().error(e.getMessage());
             }
         }
         cotacaoService.insertListCotacao(cotacaoArrayList);
@@ -50,7 +50,7 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
         @Override
         public void callback(Object result) {
             try {
-                if (primeiraLinha == false) {
+                if (naoEhCabecalhoOuRodape(result)) {
                     CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build((String) result);
                     Acao acao = AcaoFromCotacoesBovespaBuilder.build(cotacoesBovespaDto);
                     Cotacao cotacao = CotacaoFromCotacoesBovespaBuilder.build(acao, cotacoesBovespaDto);
@@ -59,11 +59,15 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
                         cotacaoService.insertListCotacao(cotacaoArrayList);
                         cotacaoArrayList = new ArrayList<>();
                     }
-                } else
-                    primeiraLinha = false;
+                }
             } catch (ParseException e) {
-                e.printStackTrace();
+                LogUtil.getLogger().error(e.getMessage());
             }
+        }
+
+        private boolean naoEhCabecalhoOuRodape(Object result) {
+            String linha = (String) result;
+            return linha.trim().length() > 50;
         }
     }
 }

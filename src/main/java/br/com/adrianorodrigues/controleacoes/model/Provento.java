@@ -1,50 +1,29 @@
 package br.com.adrianorodrigues.controleacoes.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Entity
+@Table(name = "provento")
+@AllArgsConstructor
+@Data
+@NoArgsConstructor
+@Builder
 public class Provento {
-    private int id;
+    @Id
+    @GeneratedValue
+    private Long id;
+    @ManyToOne
+    @JoinColumn(name = "acao_id")
     private Acao acao;
+    @Column
     private Date dataPagamento;
+    @Column
     private BigDecimal valor;
-
-    public Provento(int id, Acao acao, Date dataPagamento, BigDecimal valor) {
-        this.id = id;
-        this.acao = acao;
-        this.dataPagamento = dataPagamento;
-        this.valor = valor;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public Acao getAcao() {
-        return acao;
-    }
-
-    public void setAcao(Acao acao) {
-        this.acao = acao;
-    }
-
-    public Date getDataPagamento() {
-        return dataPagamento;
-    }
-
-    public void setDataPagamento(Date dataPagamento) {
-        this.dataPagamento = dataPagamento;
-    }
-
-    public BigDecimal getValor() {
-        return valor;
-    }
-
-    public void setValor(BigDecimal valor) {
-        this.valor = valor;
-    }
 }
