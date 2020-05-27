@@ -9,17 +9,17 @@ import java.math.RoundingMode;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 
 public class DividendYeldBo {
     static BigDecimal getDividendYeld(Acao acao, int ultimosNMeses) throws ParseException {
         final BigDecimal[] dividendYeld = {new BigDecimal(0)};
         Date dataFinal = new Date();
         Date dataInicial = Date.from(LocalDate.now().minusMonths(ultimosNMeses).atStartOfDay(ZoneId.systemDefault()).toInstant());
-        ArrayList<Provento> proventos = ProventosPeriodoBo.getProventosPeriodo(dataInicial, dataFinal, acao.getId());
+        List<Provento> proventos = ProventosPeriodoBo.getProventosPeriodo(dataInicial, dataFinal, acao.getId());
         HashMap<String, BigDecimal> proventosPorAno = new HashMap<>();
         for (Provento provento : proventos){
             Calendar cal = Calendar.getInstance();
