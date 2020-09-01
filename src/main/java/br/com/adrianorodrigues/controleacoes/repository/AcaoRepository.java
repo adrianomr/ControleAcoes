@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AcaoRepository extends JpaRepository<Acao, Long> {
     List<Acao> findByCodigoBdiInAndTipoMercado(List<String> codigoBdi, Integer tipoMercado);
+
+    Acao findOneByPapel(String papel);
 }

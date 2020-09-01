@@ -4,13 +4,15 @@ import br.com.adrianorodrigues.controleacoes.interfaces.ICallback;
 import org.springframework.stereotype.Component;
 
 import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 @Component
 public class FileUtil {
 
-    public final String PATH = System.getProperty("user.dir") + "/tmp";
+    public static final String PATH = System.getProperty("user.dir") + "/tmp";
 
     public void createFolderIfNotExists(File folder) {
         if (!folder.exists()) {
@@ -25,9 +27,11 @@ public class FileUtil {
     }
 
     public void writeToFIle(String fileName, String text) throws IOException {
-        BufferedWriter writer = new BufferedWriter(new FileWriter(PATH + fileName));
-        writer.write(text);
-        writer.close();
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(PATH + fileName))) {
+            writer.write(text);
+        } catch (IOException e) {
+            Logger.getGlobal().throwing(this.getClass().getName(), "writeToFIle", e);
+        }
     }
 
     public File getFileCreateIfNotExists(String path) {
@@ -36,25 +40,28 @@ public class FileUtil {
         return file;
     }
 
-    public void DeleteFiles(String filePath) {
+    public void deleteFiles(String filePath) {
         File index = new File(PATH + filePath);
         String[] entries = index.list();
-        for (String s : entries) {
-            File currentFile = new File(index.getPath(), s);
-            currentFile.delete();
-        }
+        if (entries != null && entries.length > 0)
+            for (String s : entries) {
+                File currentFile = new File(index.getPath(), s);
+                try {
+                    Files.delete(currentFile.toPath());
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
     }
 
     public String readFile(String filePath) throws IOException {
         InputStream inputStream = new FileInputStream(PATH + filePath);
-        String data = readFromInputStream(inputStream);
-        return data;
+        return readFromInputStream(inputStream);
     }
 
     public String readFile(String filePath, ICallback callback) throws IOException {
         InputStream inputStream = new FileInputStream(PATH + filePath);
-        String data = readFromInputStream(inputStream, callback);
-        return data;
+        return readFromInputStream(inputStream, callback);
     }
 
     private String readFromInputStream(InputStream inputStream, ICallback callback)

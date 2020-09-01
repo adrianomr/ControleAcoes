@@ -41,7 +41,7 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
             }
         }
         cotacaoService.insertListCotacao(cotacaoArrayList);
-        cotacaoArrayList = null;
+        cotacaoArrayList = new ArrayList<>();
         return files.size();
     }
 
