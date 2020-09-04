@@ -27,6 +27,7 @@ public class ProcessSalvaAcoesHistoricasSequencial {
     public int execute() {
         String folderName = "/cotacoes/txt";
         List<String> files = fileUtil.listFilesForFolder(folderName);
+
         for (int i = 0; i < files.size(); i++) {
             try {
                 fileUtil.readFile(folderName + "/" + files.get(i), new Callback());
