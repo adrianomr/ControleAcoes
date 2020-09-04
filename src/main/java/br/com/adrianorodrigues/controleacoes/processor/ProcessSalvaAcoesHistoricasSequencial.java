@@ -18,14 +18,16 @@ import java.util.List;
 @Component
 public class ProcessSalvaAcoesHistoricasSequencial {
     @Autowired
-    private AcaoService acaoService;
-    @Autowired
     FileUtil fileUtil;
+    @Autowired
+    private AcaoService acaoService;
     private List<Acao> loteAcoes = new ArrayList<>();
+    private List<String> papel = new ArrayList<>();
 
     public int execute() {
         String folderName = "/cotacoes/txt";
         List<String> files = fileUtil.listFilesForFolder(folderName);
+
         for (int i = 0; i < files.size(); i++) {
             try {
                 fileUtil.readFile(folderName + "/" + files.get(i), new Callback());
@@ -34,7 +36,8 @@ public class ProcessSalvaAcoesHistoricasSequencial {
             }
         }
         acaoService.insertListAcao(loteAcoes);
-        loteAcoes = null;
+        papel = new ArrayList<>();
+        loteAcoes = new ArrayList<>();
         return files.size();
     }
 
@@ -46,10 +49,14 @@ public class ProcessSalvaAcoesHistoricasSequencial {
             if (naoEhCabecalhoOuRodape(result)) {
                 CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build((String) result);
                 Acao acao = AcaoFromCotacoesBovespaBuilder.build(cotacoesBovespaDto);
-                loteAcoes.add(acao);
+                if (acaoService.findAcaoByPapel(acao.getPapel()) == null && !papel.contains(acao.getPapel())) {
+                    loteAcoes.add(acao);
+                    papel.add(acao.getPapel());
+                }
                 if (loteAcoes.size() == 1000) {
                     acaoService.insertListAcao(loteAcoes);
                     loteAcoes = new ArrayList<>();
+                    papel = new ArrayList<>();
                 }
             }
         }

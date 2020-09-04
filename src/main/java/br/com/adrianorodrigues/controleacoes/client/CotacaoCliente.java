@@ -9,8 +9,8 @@ import java.io.BufferedInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class CotacaoCliente {
     private final Logger logger = LoggerFactory.getLogger(getClass());
@@ -34,10 +34,10 @@ public class CotacaoCliente {
 
     public static boolean getCotacaoDia() {
         FileUtil fileUtil = new FileUtil();
-        Date dataAtual = new Date();
-        SimpleDateFormat x = new SimpleDateFormat("ddMMyyy");
-        try (BufferedInputStream in = new BufferedInputStream(new URL("http://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_D" + x.format(dataAtual) + ".ZIP").openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream(fileUtil.getFolderCreateIfNotExists("/cotacoes/zip") + "/COTAHIST_DIA.ZIP")) {
+        LocalDate dataAtual = LocalDate.now().minusDays(3);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("ddMMYYYY");
+        try (BufferedInputStream in = new BufferedInputStream(new URL("http://bvmf.bmfbovespa.com.br/InstDados/SerHist/COTAHIST_D" + formatter.format(dataAtual) + ".ZIP").openStream());
+             FileOutputStream fileOutputStream = new FileOutputStream(fileUtil.getFolderCreateIfNotExists("/cotacoes/dia/zip") + "/COTAHIST_DIA.ZIP")) {
             byte[] dataBuffer = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {

@@ -45,4 +45,12 @@ public class AcaoService {
     public Page<Acao> getAcaoList(Pageable pageable) {
         return acaoRepository.findAll(pageable);
     }
+
+    public Page<Acao> findAcaoListByPapelContaining(Pageable pageable, String papel) {
+        return acaoRepository.findAllByPapelContaining(papel, pageable);
+    }
+
+    public Acao findAcaoByPapel(String papel) {
+        return acaoRepository.findOneByPapel(papel);
+    }
 }

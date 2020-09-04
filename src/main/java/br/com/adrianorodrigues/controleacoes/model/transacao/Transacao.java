@@ -2,12 +2,14 @@ package br.com.adrianorodrigues.controleacoes.model.transacao;
 
 
 import br.com.adrianorodrigues.controleacoes.model.Acao;
+import br.com.adrianorodrigues.controleacoes.model.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 @Data
@@ -22,9 +24,14 @@ public class Transacao {
     private int id;
     @ManyToOne
     @JoinColumn(name = "acao_id")
+    @NotNull
     private Acao acao;
     @Column
     private TipoTransacao tipoTransacao;
     @Column
     private BigDecimal valor;
+    @ManyToOne
+    @NotNull
+    @JoinColumn(name = "usuario_id")
+    private Usuario usuario;
 }

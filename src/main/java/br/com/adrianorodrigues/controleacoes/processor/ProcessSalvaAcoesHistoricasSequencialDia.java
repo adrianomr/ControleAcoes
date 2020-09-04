@@ -1,38 +1,33 @@
 package br.com.adrianorodrigues.controleacoes.processor;
 
 import br.com.adrianorodrigues.controleacoes.builder.AcaoFromCotacoesBovespaBuilder;
-import br.com.adrianorodrigues.controleacoes.builder.CotacaoFromCotacoesBovespaBuilder;
 import br.com.adrianorodrigues.controleacoes.builder.CotacoesBovespaDtoBuilder;
-import br.com.adrianorodrigues.controleacoes.dto.ArrayListCotacaoDto;
 import br.com.adrianorodrigues.controleacoes.dto.CotacoesBovespaDto;
 import br.com.adrianorodrigues.controleacoes.interfaces.ICallback;
 import br.com.adrianorodrigues.controleacoes.model.Acao;
-import br.com.adrianorodrigues.controleacoes.model.Cotacao;
 import br.com.adrianorodrigues.controleacoes.service.AcaoService;
-import br.com.adrianorodrigues.controleacoes.service.CotacaoService;
 import br.com.adrianorodrigues.controleacoes.util.FileUtil;
 import br.com.adrianorodrigues.controleacoes.util.LogUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
-    @Autowired
-    private AcaoService acaoService;
-    @Autowired
-    private CotacaoService cotacaoService;
+public class ProcessSalvaAcoesHistoricasSequencialDia {
     @Autowired
     FileUtil fileUtil;
-    private ArrayList<Cotacao> cotacaoArrayList = new ArrayList<>();
+    @Autowired
+    private AcaoService acaoService;
+    private List<Acao> loteAcoes = new ArrayList<>();
+    private List<String> papel = new ArrayList<>();
 
     public int execute() {
-        String folderName = "/cotacoes/txt";
+        String folderName = "/cotacoes/dia/txt";
         List<String> files = fileUtil.listFilesForFolder(folderName);
+
         for (int i = 0; i < files.size(); i++) {
             try {
                 fileUtil.readFile(folderName + "/" + files.get(i), new Callback());
@@ -40,8 +35,9 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
                 LogUtil.getLogger().error(e.getMessage());
             }
         }
-        cotacaoService.insertListCotacao(cotacaoArrayList);
-        cotacaoArrayList = new ArrayList<>();
+        acaoService.insertListAcao(loteAcoes);
+        papel = new ArrayList<>();
+        loteAcoes = new ArrayList<>();
         return files.size();
     }
 
@@ -49,19 +45,19 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
 
         @Override
         public void callback(Object result) {
-            try {
-                if (naoEhCabecalhoOuRodape(result)) {
-                    CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build((String) result);
-                    Acao acao = AcaoFromCotacoesBovespaBuilder.build(cotacoesBovespaDto);
-                    Cotacao cotacao = CotacaoFromCotacoesBovespaBuilder.build(acao, cotacoesBovespaDto);
-                    cotacaoArrayList.add(cotacao);
-                    if (ArrayListCotacaoDto.getArrayListCotacaoDto().size() == 1000) {
-                        cotacaoService.insertListCotacao(cotacaoArrayList);
-                        cotacaoArrayList = new ArrayList<>();
-                    }
+
+            if (naoEhCabecalhoOuRodape(result)) {
+                CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build((String) result);
+                Acao acao = AcaoFromCotacoesBovespaBuilder.build(cotacoesBovespaDto);
+                if (acaoService.findAcaoByPapel(acao.getPapel()) == null && !papel.contains(acao.getPapel())) {
+                    loteAcoes.add(acao);
+                    papel.add(acao.getPapel());
                 }
-            } catch (ParseException e) {
-                LogUtil.getLogger().error(e.getMessage());
+                if (loteAcoes.size() == 1000) {
+                    acaoService.insertListAcao(loteAcoes);
+                    loteAcoes = new ArrayList<>();
+                    papel = new ArrayList<>();
+                }
             }
         }
 
@@ -70,4 +66,5 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
             return linha.trim().length() > 50;
         }
     }
+
 }
