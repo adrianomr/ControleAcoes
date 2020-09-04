@@ -44,4 +44,28 @@ class TransacaoServiceTest {
         List<Transacao> transacaoList = transacaoRepository.findAll();
         assertEquals(1, transacaoList.size());
     }
+
+    @Test
+    void vendaAcao() {
+        transacaoRepository.deleteAll();
+        TransacaoDTO transacaoDTO = new TransacaoDTO();
+        transacaoDTO.setIdUsuario(1l);
+        transacaoDTO.setPapel("BCFF11");
+        transacaoDTO.setValor(90d);
+        transacaoService.vendaAcao(transacaoDTO);
+        List<Transacao> transacaoList = transacaoRepository.findAll();
+        assertEquals(1, transacaoList.size());
+    }
+
+    @Test
+    void vendaAcaoQuandoAcaoNaoExistirInsereAcao() {
+        transacaoRepository.deleteAll();
+        TransacaoDTO transacaoDTO = new TransacaoDTO();
+        transacaoDTO.setIdUsuario(1l);
+        transacaoDTO.setPapel("ITUB3");
+        transacaoDTO.setValor(90d);
+        transacaoService.vendaAcao(transacaoDTO);
+        List<Transacao> transacaoList = transacaoRepository.findAll();
+        assertEquals(1, transacaoList.size());
+    }
 }

@@ -20,14 +20,8 @@ public class TransacaoService {
     @Autowired
     TransacaoRepository transacaoRepository;
 
-    public void compraAcao(TransacaoDTO transacaoDTO) {
-        Acao acao = findOrCreateAcao(transacaoDTO.getPapel());
-        Transacao transacao = new Transacao();
-        transacao.setAcao(acao);
-        transacao.setTipoTransacao(TipoTransacao.COMPRA);
-        transacao.setValor(BigDecimal.valueOf(transacaoDTO.getValor()));
-        transacao.setUsuario(usuarioRepository.getOne(transacaoDTO.getIdUsuario()));
-        transacaoRepository.save(transacao);
+    public void compraAcao(TransacaoDTO transacao) {
+        saveTrasacao(transacao, TipoTransacao.COMPRA);
     }
 
     private Acao findOrCreateAcao(String papel) {
@@ -38,5 +32,19 @@ public class TransacaoService {
             acaoService.insertAcao(acao);
         }
         return acao;
+    }
+
+    private void saveTrasacao(TransacaoDTO transacaoDTO, TipoTransacao tipoTransacao) {
+        Acao acao = findOrCreateAcao(transacaoDTO.getPapel());
+        Transacao transacao = new Transacao();
+        transacao.setAcao(acao);
+        transacao.setTipoTransacao(tipoTransacao);
+        transacao.setValor(BigDecimal.valueOf(transacaoDTO.getValor()));
+        transacao.setUsuario(usuarioRepository.getOne(transacaoDTO.getIdUsuario()));
+        transacaoRepository.save(transacao);
+    }
+
+    public void vendaAcao(TransacaoDTO transacao) {
+        saveTrasacao(transacao, TipoTransacao.VENDA);
     }
 }

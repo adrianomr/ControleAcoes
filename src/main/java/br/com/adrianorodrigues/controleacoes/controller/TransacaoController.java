@@ -21,4 +21,10 @@ public class TransacaoController {
         transacaoService.compraAcao(transacao);
         return "Compra realizada com sucesso";
     }
+
+    @PostMapping(value = "/venda", consumes = "application/json")
+    public String postVenda(@Valid @RequestBody TransacaoDTO transacao) {
+        transacaoService.vendaAcao(transacao);
+        return "Venda realizada com sucesso";
+    }
 }
