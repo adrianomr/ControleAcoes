@@ -37,8 +37,10 @@ public class TransacaoService {
     private void saveTrasacao(TransacaoDTO transacaoDTO, TipoTransacao tipoTransacao) {
         Acao acao = findOrCreateAcao(transacaoDTO.getPapel());
         Transacao transacao = new Transacao();
+        transacao.setData(transacaoDTO.getData());
         transacao.setAcao(acao);
         transacao.setTipoTransacao(tipoTransacao);
+        transacao.setQuantidade(transacaoDTO.getQuantidade());
         transacao.setValor(BigDecimal.valueOf(transacaoDTO.getValor()));
         transacao.setUsuario(usuarioRepository.getOne(transacaoDTO.getIdUsuario()));
         transacaoRepository.save(transacao);

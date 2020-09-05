@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -27,7 +28,15 @@ public class Transacao {
     @NotNull
     private Acao acao;
     @Column
+    @NotNull
     private TipoTransacao tipoTransacao;
+    @NotNull
+    @Column
+    private LocalDateTime data;
+    @NotNull
+    @Column
+    private long quantidade;
+    @NotNull
     @Column
     private BigDecimal valor;
     @ManyToOne

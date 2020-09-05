@@ -6,11 +6,11 @@ drop sequence if exists hibernate_sequence;
 
 create table acao (
         id int8 not null,
-        codigoBdi varchar(100),
-        nomeEmpresa varchar(100),
+        codigo_bdi varchar(100),
+        nome_empresa varchar(100),
         papel varchar(100),
         quantidade numeric(20),
-        tipoMercado int4,
+        tipo_mercado int4,
         valor numeric(20,4),
         primary key (id)
     );
@@ -19,14 +19,14 @@ create table acao (
         id int8 not null,
         data timestamp,
         papel varchar(100),
-        valorFechamento numeric(20,4),
+        valor_fechamento numeric(20,4),
         acao_id int8,
         primary key (id)
     );
 
     create table provento (
         id int8 not null,
-        dataPagamento timestamp,
+        data_pagamento timestamp,
         valor numeric(19, 2),
         acao_id int8,
         primary key (id)
@@ -34,7 +34,7 @@ create table acao (
 
     create table transacao (
         id int4 not null,
-        tipoTransacao int4,
+        tipo_transacao int4,
         valor numeric(19, 2),
         acao_id int8,
         primary key (id)
