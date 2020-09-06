@@ -1,4 +1,4 @@
-package br.com.adrianorodrigues.controleacoes.model;
+package br.com.adrianorodrigues.controleacoes.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,6 +11,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Carteira {
-    private List<Acao> acaes;
+public class CarteiraDTO {
+    private List<AcaoDTO> acoes;
 }
