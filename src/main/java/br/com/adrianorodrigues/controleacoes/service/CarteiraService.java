@@ -25,6 +25,9 @@ public class CarteiraService {
     private CotacaoAtualService cotacaoAtualService;
 
     public CarteiraDTO getCarteira(Long idUsuario) {
+        CarteiraDTO carteiraDTO = CarteiraDTO
+                .builder()
+                .build();
         Usuario usuario = new Usuario();
         usuario.setId(idUsuario);
         List<Transacao> transacaoList = transacaoRepository.findAllByUsuario(usuario);
@@ -56,11 +59,13 @@ public class CarteiraService {
             if (acaoDTO.getQuantidade() > 0) {
                 acaoDTO.setPrecoMedio(acaoDTO.getPrecoMedio() / acaoDTO.getQuantidade());
                 acaoDTOList.add(acaoDTO);
+                Double lucroPrejuizoAcao = (acaoDTO.getValor() - acaoDTO.getPrecoMedio()) * acaoDTO.getQuantidade();
+                carteiraDTO.setLucroPrejuizo(carteiraDTO.getLucroPrejuizo() + lucroPrejuizoAcao);
+                carteiraDTO.setValorAtual(carteiraDTO.getValorAtual() + (acaoDTO.getValor() * acaoDTO.getQuantidade()));
+                carteiraDTO.setValorInvestido(carteiraDTO.getValorInvestido() + (acaoDTO.getPrecoMedio() * acaoDTO.getQuantidade()));
             }
         });
-        return CarteiraDTO
-                .builder()
-                .acoes(acaoDTOList)
-                .build();
+        carteiraDTO.setAcoes(acaoDTOList);
+        return carteiraDTO;
     }
 }
