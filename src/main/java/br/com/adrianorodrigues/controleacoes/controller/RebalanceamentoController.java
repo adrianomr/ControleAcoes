@@ -1,5 +1,6 @@
 package br.com.adrianorodrigues.controleacoes.controller;
 
+import br.com.adrianorodrigues.controleacoes.dto.CarteiraDTO;
 import br.com.adrianorodrigues.controleacoes.model.RebalanceamentoAcao;
 import br.com.adrianorodrigues.controleacoes.service.RebalanceamentoAcaoService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,5 +28,10 @@ public class RebalanceamentoController {
     @PutMapping(consumes = "application/json")
     public void putRebalanceamento(@Valid @RequestBody RebalanceamentoAcao rebalanceamentoAcao) {
         rebalanceamentoAcaoService.save(rebalanceamentoAcao);
+    }
+
+    @GetMapping("carteira")
+    public CarteiraDTO getCarteiraParaRebalanceamento(@RequestParam("usuario") Long idUsuario) {
+        return rebalanceamentoAcaoService.getCarteiraParaRebalanceamento(idUsuario);
     }
 }

@@ -6,6 +6,7 @@ public class AcaoDTO {
     private Double valor;
     private Double precoMedio;
     private Long quantidade;
+    private Double percentualRebalanceamento;
 
     public Long getId() {
         return id;
@@ -45,5 +46,13 @@ public class AcaoDTO {
 
     public void setQuantidade(Long quantidade) {
         this.quantidade = quantidade;
+    }
+
+    public Double getPercentualRebalanceamento() {
+        return percentualRebalanceamento;
+    }
+
+    public void setPercentualRebalanceamento(Double percentualRebalanceamento) {
+        this.percentualRebalanceamento = percentualRebalanceamento;
     }
 }

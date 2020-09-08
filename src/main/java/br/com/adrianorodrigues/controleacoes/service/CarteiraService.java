@@ -2,6 +2,7 @@ package br.com.adrianorodrigues.controleacoes.service;
 
 import br.com.adrianorodrigues.controleacoes.dto.AcaoDTO;
 import br.com.adrianorodrigues.controleacoes.dto.CarteiraDTO;
+import br.com.adrianorodrigues.controleacoes.model.RebalanceamentoAcao;
 import br.com.adrianorodrigues.controleacoes.model.Usuario;
 import br.com.adrianorodrigues.controleacoes.model.transacao.TipoTransacao;
 import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
@@ -23,6 +24,9 @@ public class CarteiraService {
     private TransacaoRepository transacaoRepository;
     @Autowired
     private CotacaoAtualService cotacaoAtualService;
+    @Autowired
+    private RebalanceamentoAcaoService rebalanceamentoAcaoService;
+    private Map<String, AcaoDTO> acoes;
 
     public CarteiraDTO getCarteira(Long idUsuario) {
         CarteiraDTO carteiraDTO = CarteiraDTO
@@ -31,7 +35,9 @@ public class CarteiraService {
         Usuario usuario = new Usuario();
         usuario.setId(idUsuario);
         List<Transacao> transacaoList = transacaoRepository.findAllByUsuario(usuario);
-        Map<String, AcaoDTO> acoes = new HashMap<>();
+        List<RebalanceamentoAcao> rebalanceamentoAcaoList = rebalanceamentoAcaoService
+                .findAllByUsuario(usuario.getId());
+        acoes = new HashMap<>();
         transacaoList.stream().forEach((Transacao transacao) -> {
             AcaoDTO acaoDTO = new AcaoDTO();
             int fatorTransacao = transacao.getTipoTransacao().equals(TipoTransacao.COMPRA) ? 1 : -1;
@@ -46,6 +52,9 @@ public class CarteiraService {
                 acaoDTO.setPapel(transacao.getAcao().getPapel());
                 acaoDTO.setQuantidade(quantidade);
                 acaoDTO.setPrecoMedio(valor);
+                acaoDTO.setPercentualRebalanceamento(
+                        findRebalanceamentoByAcao(rebalanceamentoAcaoList, acaoDTO.getId()).getPercentual()
+                );
                 try {
                     acaoDTO.setValor(cotacaoAtualService.getCotacaoAtual(acaoDTO.getPapel()).getCotacao());
                 } catch (IOException e) {
@@ -67,5 +76,17 @@ public class CarteiraService {
         });
         carteiraDTO.setAcoes(acaoDTOList);
         return carteiraDTO;
+    }
+
+    private RebalanceamentoAcao findRebalanceamentoByAcao(List<RebalanceamentoAcao> rebalanceamentoAcaoList, Long idAcao) {
+        return rebalanceamentoAcaoList
+                .stream()
+                .filter(rebalanceamentoAcao -> rebalanceamentoAcao.getAcao().getId() == idAcao)
+                .findFirst()
+                .get();
+    }
+
+    public Map<String, AcaoDTO> getAcoes() {
+        return acoes;
     }
 }
