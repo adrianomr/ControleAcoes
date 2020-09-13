@@ -33,7 +33,7 @@ create table acao (
     );
 
     create table transacao (
-        id int4 not null,
+        id int8 not null,
         tipo_transacao int4,
         valor numeric(19, 2),
         acao_id int8,

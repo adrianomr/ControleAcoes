@@ -1,6 +1,6 @@
 package br.com.adrianorodrigues.controleacoes.controller.transacao;
 
-import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
+import br.com.adrianorodrigues.controleacoes.dto.TransacaoDTO;
 import br.com.adrianorodrigues.controleacoes.service.transacao.TransacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -14,12 +14,12 @@ public class TransacaoController {
     TransacaoService transacaoService;
 
     @GetMapping()
-    public List<Transacao> getTransacoes() {
+    public List<TransacaoDTO> getTransacoes() {
         return transacaoService.findAllTransacaoes();
     }
 
     @DeleteMapping("{id}")
-    public void postCompra(@PathVariable Long id) {
+    public void deleteTrancao(@PathVariable Long id) {
         transacaoService.delete(id);
     }
 

@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 public class Transacao {
     @Id
     @GeneratedValue
-    private int id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name = "acao_id")
     @NotNull

@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 
 @Data
 public class TransacaoDTO {
+    private Long id;
     @NotNull
     private Long idUsuario;
     @NotNull

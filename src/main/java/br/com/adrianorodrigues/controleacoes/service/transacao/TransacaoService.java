@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class TransacaoService {
@@ -44,11 +45,22 @@ public class TransacaoService {
         transacaoRepository.save(transacao);
     }
 
-    public List<Transacao> findAllTransacaoes() {
-        return transacaoRepository.findAll();
+    public List<TransacaoDTO> findAllTransacaoes() {
+        return transacaoRepository.findAll().stream().map(transacao -> {
+            TransacaoDTO transacaoDTO = new TransacaoDTO();
+            transacaoDTO.setId(transacao.getId());
+            transacaoDTO.setPapel(transacao.getAcao().getPapel());
+            transacaoDTO.setValor(transacao.getValor().doubleValue());
+            transacaoDTO.setIdUsuario(transacao.getUsuario().getId());
+            transacaoDTO.setQuantidade(transacao.getQuantidade());
+            transacaoDTO.setData(transacao.getData());
+            return transacaoDTO;
+        }).collect(Collectors.toList());
     }
 
     public void delete(Long id) {
-        transacaoRepository.deleteById(id);
+        Transacao transacao = new Transacao();
+        transacao.setId(id);
+        transacaoRepository.delete(transacao);
     }
 }
