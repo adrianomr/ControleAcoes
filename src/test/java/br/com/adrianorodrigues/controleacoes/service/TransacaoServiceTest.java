@@ -2,8 +2,10 @@ package br.com.adrianorodrigues.controleacoes.service;
 
 import br.com.adrianorodrigues.controleacoes.ControleAcoesApplication;
 import br.com.adrianorodrigues.controleacoes.dto.TransacaoDTO;
+import br.com.adrianorodrigues.controleacoes.model.transacao.TipoTransacao;
 import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
 import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
+import br.com.adrianorodrigues.controleacoes.service.transacao.TransacaoService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -27,8 +29,7 @@ class TransacaoServiceTest {
         TransacaoDTO transacaoDTO = new TransacaoDTO();
         transacaoDTO.setIdUsuario(1l);
         transacaoDTO.setPapel("BCFF11");
-        transacaoDTO.setValor(90d);
-        transacaoService.compraAcao(transacaoDTO);
+        transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.COMPRA);
         List<Transacao> transacaoList = transacaoRepository.findAll();
         assertEquals(1, transacaoList.size());
     }
@@ -40,7 +41,7 @@ class TransacaoServiceTest {
         transacaoDTO.setIdUsuario(1l);
         transacaoDTO.setPapel("ITUB3");
         transacaoDTO.setValor(90d);
-        transacaoService.compraAcao(transacaoDTO);
+        transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.COMPRA);
         List<Transacao> transacaoList = transacaoRepository.findAll();
         assertEquals(1, transacaoList.size());
     }
@@ -52,7 +53,7 @@ class TransacaoServiceTest {
         transacaoDTO.setIdUsuario(1l);
         transacaoDTO.setPapel("BCFF11");
         transacaoDTO.setValor(90d);
-        transacaoService.vendaAcao(transacaoDTO);
+        transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.VENDA);
         List<Transacao> transacaoList = transacaoRepository.findAll();
         assertEquals(1, transacaoList.size());
     }
@@ -64,7 +65,7 @@ class TransacaoServiceTest {
         transacaoDTO.setIdUsuario(1l);
         transacaoDTO.setPapel("ITUB3");
         transacaoDTO.setValor(90d);
-        transacaoService.vendaAcao(transacaoDTO);
+        transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.VENDA);
         List<Transacao> transacaoList = transacaoRepository.findAll();
         assertEquals(1, transacaoList.size());
     }

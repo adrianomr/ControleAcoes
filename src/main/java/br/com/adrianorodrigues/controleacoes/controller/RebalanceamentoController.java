@@ -30,6 +30,11 @@ public class RebalanceamentoController {
         rebalanceamentoAcaoService.save(rebalanceamentoAcao);
     }
 
+    @DeleteMapping("{id}")
+    public void deleteRebalanceamento(@PathVariable Long id) {
+        rebalanceamentoAcaoService.delete(id);
+    }
+
     @GetMapping("carteira")
     public CarteiraDTO getCarteiraParaRebalanceamento(@RequestParam("usuario") Long idUsuario) {
         return rebalanceamentoAcaoService.getCarteiraParaRebalanceamento(idUsuario);

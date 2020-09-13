@@ -27,6 +27,12 @@ public class RebalanceamentoAcaoService {
         rebalanceamentoAcaoRepository.save(rebalanceamentoAcao);
     }
 
+    public void delete(Long id) {
+        RebalanceamentoAcao rebalanceamentoAcao = new RebalanceamentoAcao();
+        rebalanceamentoAcao.setId(id);
+        rebalanceamentoAcaoRepository.delete(rebalanceamentoAcao);
+    }
+
     public List<RebalanceamentoAcao> findAllByUsuario(Long idUsuario) {
         Usuario usuario = new Usuario();
         usuario.setId(idUsuario);
