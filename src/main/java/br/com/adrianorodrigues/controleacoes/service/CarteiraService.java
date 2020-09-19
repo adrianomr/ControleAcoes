@@ -26,7 +26,6 @@ public class CarteiraService {
     private CotacaoAtualService cotacaoAtualService;
     @Autowired
     private RebalanceamentoAcaoService rebalanceamentoAcaoService;
-    private Map<String, AcaoDTO> acoes;
 
     public CarteiraDTO getCarteira(Long idUsuario) {
         CarteiraDTO carteiraDTO = CarteiraDTO
@@ -34,10 +33,43 @@ public class CarteiraService {
                 .build();
         Usuario usuario = new Usuario();
         usuario.setId(idUsuario);
+        carteiraDTO.setAcoes(getAcoesDTOList(carteiraDTO, getAcoes(usuario)));
+        return carteiraDTO;
+    }
+
+    private List<AcaoDTO> getAcoesDTOList(CarteiraDTO carteiraDTO, Map<String, AcaoDTO> acoes) {
+        List<AcaoDTO> acaoDTOList = new ArrayList<>();
+        acoes.values().stream().forEach(acaoDTO -> {
+            if (acaoDTO.getQuantidade() > 0) {
+                acaoDTO.setPrecoMedio(acaoDTO.getPrecoMedio() / acaoDTO.getQuantidade());
+                acaoDTOList.add(acaoDTO);
+                Double lucroPrejuizoAcao = (acaoDTO.getValor() - acaoDTO.getPrecoMedio()) * acaoDTO.getQuantidade();
+                carteiraDTO.setLucroPrejuizo(carteiraDTO.getLucroPrejuizo() + lucroPrejuizoAcao);
+                carteiraDTO.setValorAtual(carteiraDTO.getValorAtual() + (acaoDTO.getValor() * acaoDTO.getQuantidade()));
+                carteiraDTO.setValorInvestido(carteiraDTO.getValorInvestido() + (acaoDTO.getPrecoMedio() * acaoDTO.getQuantidade()));
+            }
+        });
+        return acaoDTOList;
+    }
+
+    private RebalanceamentoAcao findRebalanceamentoByAcao(List<RebalanceamentoAcao> rebalanceamentoAcaoList, Long idAcao) {
+        try {
+            return rebalanceamentoAcaoList
+                    .stream()
+                    .filter(rebalanceamentoAcao -> rebalanceamentoAcao.getAcao().getId().equals(idAcao))
+                    .findFirst()
+                    .orElse(null);
+        } catch (Exception e) {
+            LogUtil.getLogger().info("Não foram encontrados dados de rebalanceamento");
+        }
+        return null;
+    }
+
+    public Map<String, AcaoDTO> getAcoes(Usuario usuario) {
+        Map<String, AcaoDTO> acoes = new HashMap<>();
         List<Transacao> transacaoList = transacaoRepository.findAllByUsuario(usuario);
         List<RebalanceamentoAcao> rebalanceamentoAcaoList = rebalanceamentoAcaoService
                 .findAllByUsuario(usuario.getId());
-        acoes = new HashMap<>();
         transacaoList.stream().forEach((Transacao transacao) -> {
             AcaoDTO acaoDTO = new AcaoDTO();
             int fatorTransacao = transacao.getTipoTransacao().equals(TipoTransacao.COMPRA) ? 1 : -1;
@@ -52,8 +84,9 @@ public class CarteiraService {
                 acaoDTO.setPapel(transacao.getAcao().getPapel());
                 acaoDTO.setQuantidade(quantidade);
                 acaoDTO.setPrecoMedio(valor);
+                RebalanceamentoAcao rebalanceamentoAcao = findRebalanceamentoByAcao(rebalanceamentoAcaoList, acaoDTO.getId());
                 acaoDTO.setPercentualRebalanceamento(
-                        findRebalanceamentoByAcao(rebalanceamentoAcaoList, acaoDTO.getId()).getPercentual()
+                        rebalanceamentoAcao == null ? 0 : rebalanceamentoAcao.getPercentual()
                 );
                 try {
                     acaoDTO.setValor(cotacaoAtualService.getCotacaoAtual(acaoDTO.getPapel()).getCotacao());
@@ -63,30 +96,6 @@ public class CarteiraService {
             }
             acoes.put(transacao.getAcao().getPapel(), acaoDTO);
         });
-        List<AcaoDTO> acaoDTOList = new ArrayList<>();
-        acoes.values().stream().forEach(acaoDTO -> {
-            if (acaoDTO.getQuantidade() > 0) {
-                acaoDTO.setPrecoMedio(acaoDTO.getPrecoMedio() / acaoDTO.getQuantidade());
-                acaoDTOList.add(acaoDTO);
-                Double lucroPrejuizoAcao = (acaoDTO.getValor() - acaoDTO.getPrecoMedio()) * acaoDTO.getQuantidade();
-                carteiraDTO.setLucroPrejuizo(carteiraDTO.getLucroPrejuizo() + lucroPrejuizoAcao);
-                carteiraDTO.setValorAtual(carteiraDTO.getValorAtual() + (acaoDTO.getValor() * acaoDTO.getQuantidade()));
-                carteiraDTO.setValorInvestido(carteiraDTO.getValorInvestido() + (acaoDTO.getPrecoMedio() * acaoDTO.getQuantidade()));
-            }
-        });
-        carteiraDTO.setAcoes(acaoDTOList);
-        return carteiraDTO;
-    }
-
-    private RebalanceamentoAcao findRebalanceamentoByAcao(List<RebalanceamentoAcao> rebalanceamentoAcaoList, Long idAcao) {
-        return rebalanceamentoAcaoList
-                .stream()
-                .filter(rebalanceamentoAcao -> rebalanceamentoAcao.getAcao().getId() == idAcao)
-                .findFirst()
-                .get();
-    }
-
-    public Map<String, AcaoDTO> getAcoes() {
         return acoes;
     }
 }

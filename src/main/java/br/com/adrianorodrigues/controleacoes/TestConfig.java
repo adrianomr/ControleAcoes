@@ -16,6 +16,7 @@ public class TestConfig {
     @Profile("test")
     public CommandLineRunner run(UsuarioRepository usuarioRepository, AcaoRepository acaoRepository, TransacaoRepository transacaoRepository) {
         return args -> {
+            usuarioRepository.deleteAll();
             transacaoRepository.deleteAll();
             usuarioRepository.deleteAll();
             acaoRepository.deleteAll();

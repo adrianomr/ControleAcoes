@@ -41,7 +41,14 @@ public class RebalanceamentoAcaoService {
 
     public CarteiraDTO getCarteiraParaRebalanceamento(Long idUsuario) {
         CarteiraDTO carteiraDTO = carteiraService.getCarteira(idUsuario);
-        carteiraDTO.getAcoes().addAll(getAcoesAusentesCarteira(findAllByUsuario(idUsuario), carteiraService.getAcoes()));
+        carteiraDTO
+                .getAcoes()
+                .addAll(
+                        getAcoesAusentesCarteira(
+                                findAllByUsuario(idUsuario),
+                                carteiraService.getAcoes(Usuario.builder().id(idUsuario).build())
+                        )
+                );
         return carteiraDTO;
     }
 

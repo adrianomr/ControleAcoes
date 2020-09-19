@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.context.annotation.PropertySource;
 
 @Configuration
-@PropertySource("classpath:hibernate-${persistenceTarget:local}.properties")
-@Profile("!test")
-public class HibernateConfig {
+@Profile("test")
+@PropertySource("classpath:hibernate-teste.properties")
+public class HibernateTestConfig {
 }

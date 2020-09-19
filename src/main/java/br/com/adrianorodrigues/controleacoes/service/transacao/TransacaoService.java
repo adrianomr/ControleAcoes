@@ -50,7 +50,8 @@ public class TransacaoService {
             TransacaoDTO transacaoDTO = new TransacaoDTO();
             transacaoDTO.setId(transacao.getId());
             transacaoDTO.setPapel(transacao.getAcao().getPapel());
-            transacaoDTO.setValor(transacao.getValor().doubleValue());
+            int fator = transacao.getTipoTransacao().equals(TipoTransacao.COMPRA) ? 1 : -1;
+            transacaoDTO.setValor(fator * transacao.getValor().doubleValue());
             transacaoDTO.setIdUsuario(transacao.getUsuario().getId());
             transacaoDTO.setQuantidade(transacao.getQuantidade());
             transacaoDTO.setData(transacao.getData());
