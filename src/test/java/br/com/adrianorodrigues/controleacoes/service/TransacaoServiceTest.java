@@ -1,37 +1,47 @@
 package br.com.adrianorodrigues.controleacoes.service;
 
-import br.com.adrianorodrigues.controleacoes.ControleAcoesApplication;
 import br.com.adrianorodrigues.controleacoes.dto.TransacaoDTO;
+import br.com.adrianorodrigues.controleacoes.model.Usuario;
 import br.com.adrianorodrigues.controleacoes.model.transacao.TipoTransacao;
 import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
 import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
+import br.com.adrianorodrigues.controleacoes.repository.UsuarioRepository;
 import br.com.adrianorodrigues.controleacoes.service.transacao.TransacaoService;
-import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@Disabled("Teste desabilitado ate ajustar criação de contexto")
-@SpringBootTest(classes = {
-        ControleAcoesApplication.class})
+@SpringBootTest
 @ActiveProfiles("test")
 class TransacaoServiceTest {
     @Autowired
     TransacaoService transacaoService;
     @Autowired
     TransacaoRepository transacaoRepository;
+    @Autowired
+    UsuarioRepository usuarioRepository;
+    Usuario usuario;
+
+    @BeforeEach
+    void setUp() {
+        usuario = usuarioRepository.findAll().get(0);
+    }
 
     @Test
     void compraAcao() {
         transacaoRepository.deleteAll();
         TransacaoDTO transacaoDTO = new TransacaoDTO();
-        transacaoDTO.setIdUsuario(1l);
+        transacaoDTO.setIdUsuario(usuario.getId());
         transacaoDTO.setPapel("BCFF11");
+        transacaoDTO.setData(LocalDateTime.now());
+        transacaoDTO.setValor(90d);
         transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.COMPRA);
         List<Transacao> transacaoList = transacaoRepository.findAll();
         assertEquals(1, transacaoList.size());
@@ -41,9 +51,10 @@ class TransacaoServiceTest {
     void compraAcaoQuandoAcaoNaoExistirInsereAcao() {
         transacaoRepository.deleteAll();
         TransacaoDTO transacaoDTO = new TransacaoDTO();
-        transacaoDTO.setIdUsuario(1l);
+        transacaoDTO.setIdUsuario(usuario.getId());
         transacaoDTO.setPapel("ITUB3");
         transacaoDTO.setValor(90d);
+        transacaoDTO.setData(LocalDateTime.now());
         transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.COMPRA);
         List<Transacao> transacaoList = transacaoRepository.findAll();
         assertEquals(1, transacaoList.size());
@@ -53,9 +64,10 @@ class TransacaoServiceTest {
     void vendaAcao() {
         transacaoRepository.deleteAll();
         TransacaoDTO transacaoDTO = new TransacaoDTO();
-        transacaoDTO.setIdUsuario(1l);
+        transacaoDTO.setIdUsuario(usuario.getId());
         transacaoDTO.setPapel("BCFF11");
         transacaoDTO.setValor(90d);
+        transacaoDTO.setData(LocalDateTime.now());
         transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.VENDA);
         List<Transacao> transacaoList = transacaoRepository.findAll();
         assertEquals(1, transacaoList.size());
@@ -65,9 +77,10 @@ class TransacaoServiceTest {
     void vendaAcaoQuandoAcaoNaoExistirInsereAcao() {
         transacaoRepository.deleteAll();
         TransacaoDTO transacaoDTO = new TransacaoDTO();
-        transacaoDTO.setIdUsuario(1l);
+        transacaoDTO.setIdUsuario(usuario.getId());
         transacaoDTO.setPapel("ITUB3");
         transacaoDTO.setValor(90d);
+        transacaoDTO.setData(LocalDateTime.now());
         transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.VENDA);
         List<Transacao> transacaoList = transacaoRepository.findAll();
         assertEquals(1, transacaoList.size());

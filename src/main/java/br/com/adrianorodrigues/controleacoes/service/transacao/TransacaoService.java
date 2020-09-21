@@ -1,7 +1,9 @@
 package br.com.adrianorodrigues.controleacoes.service.transacao;
 
 import br.com.adrianorodrigues.controleacoes.dto.TransacaoDTO;
+import br.com.adrianorodrigues.controleacoes.exception.ResourceNotFoundException;
 import br.com.adrianorodrigues.controleacoes.model.Acao;
+import br.com.adrianorodrigues.controleacoes.model.Usuario;
 import br.com.adrianorodrigues.controleacoes.model.transacao.TipoTransacao;
 import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
 import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
@@ -35,13 +37,16 @@ public class TransacaoService {
 
     public void saveTrasacao(TransacaoDTO transacaoDTO, TipoTransacao tipoTransacao) {
         Acao acao = findOrCreateAcao(transacaoDTO.getPapel());
+        Usuario usuario = usuarioRepository
+                .findById(transacaoDTO.getIdUsuario())
+                .orElseThrow(() -> new ResourceNotFoundException("Usuário não existe"));
         Transacao transacao = new Transacao();
         transacao.setData(transacaoDTO.getData());
         transacao.setAcao(acao);
         transacao.setTipoTransacao(tipoTransacao);
         transacao.setQuantidade(transacaoDTO.getQuantidade());
         transacao.setValor(BigDecimal.valueOf(transacaoDTO.getValor()));
-        transacao.setUsuario(usuarioRepository.getOne(transacaoDTO.getIdUsuario()));
+        transacao.setUsuario(usuario);
         transacaoRepository.save(transacao);
     }
 
