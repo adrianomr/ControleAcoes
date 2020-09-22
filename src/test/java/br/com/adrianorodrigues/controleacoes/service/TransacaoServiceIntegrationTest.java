@@ -3,7 +3,6 @@ package br.com.adrianorodrigues.controleacoes.service;
 import br.com.adrianorodrigues.controleacoes.dto.TransacaoDTO;
 import br.com.adrianorodrigues.controleacoes.model.Usuario;
 import br.com.adrianorodrigues.controleacoes.model.transacao.TipoTransacao;
-import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
 import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
 import br.com.adrianorodrigues.controleacoes.repository.UsuarioRepository;
 import br.com.adrianorodrigues.controleacoes.service.transacao.TransacaoService;
@@ -43,7 +42,7 @@ class TransacaoServiceIntegrationTest {
         transacaoDTO.setData(LocalDateTime.now());
         transacaoDTO.setValor(90d);
         transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.COMPRA);
-        List<Transacao> transacaoList = transacaoRepository.findAll();
+        List<TransacaoDTO> transacaoList = transacaoService.findAllTransacaoes();
         assertEquals(1, transacaoList.size());
     }
 
@@ -56,7 +55,7 @@ class TransacaoServiceIntegrationTest {
         transacaoDTO.setValor(90d);
         transacaoDTO.setData(LocalDateTime.now());
         transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.COMPRA);
-        List<Transacao> transacaoList = transacaoRepository.findAll();
+        List<TransacaoDTO> transacaoList = transacaoService.findAllTransacaoes();
         assertEquals(1, transacaoList.size());
     }
 
@@ -69,7 +68,7 @@ class TransacaoServiceIntegrationTest {
         transacaoDTO.setValor(90d);
         transacaoDTO.setData(LocalDateTime.now());
         transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.VENDA);
-        List<Transacao> transacaoList = transacaoRepository.findAll();
+        List<TransacaoDTO> transacaoList = transacaoService.findAllTransacaoes();
         assertEquals(1, transacaoList.size());
     }
 
@@ -82,7 +81,22 @@ class TransacaoServiceIntegrationTest {
         transacaoDTO.setValor(90d);
         transacaoDTO.setData(LocalDateTime.now());
         transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.VENDA);
-        List<Transacao> transacaoList = transacaoRepository.findAll();
+        List<TransacaoDTO> transacaoList = transacaoService.findAllTransacaoes();
         assertEquals(1, transacaoList.size());
+    }
+
+    @Test
+    void deleteTransacao() {
+        transacaoRepository.deleteAll();
+        TransacaoDTO transacaoDTO = new TransacaoDTO();
+        transacaoDTO.setIdUsuario(usuario.getId());
+        transacaoDTO.setPapel("BCFF11");
+        transacaoDTO.setData(LocalDateTime.now());
+        transacaoDTO.setValor(90d);
+        transacaoService.saveTrasacao(transacaoDTO, TipoTransacao.COMPRA);
+        List<TransacaoDTO> transacaoList = transacaoService.findAllTransacaoes();
+        transacaoService.delete(transacaoList.get(0).getId());
+        transacaoList = transacaoService.findAllTransacaoes();
+        assertEquals(0, transacaoList.size());
     }
 }
