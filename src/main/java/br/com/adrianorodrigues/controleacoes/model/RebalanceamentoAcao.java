@@ -16,6 +16,8 @@ public class RebalanceamentoAcao {
     private Usuario usuario;
     @Column
     private Double percentual;
+    @Column
+    private Double nota;
 
     public Long getId() {
         return id;
@@ -47,5 +49,13 @@ public class RebalanceamentoAcao {
 
     public void setPercentual(Double percentual) {
         this.percentual = percentual;
+    }
+
+    public Double getNota() {
+        return nota;
+    }
+
+    public void setNota(Double nota) {
+        this.nota = nota;
     }
 }
