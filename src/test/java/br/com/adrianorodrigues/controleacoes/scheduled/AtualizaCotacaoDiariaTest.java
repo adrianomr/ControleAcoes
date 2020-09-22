@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-@Disabled("Teste desabilitado ate ajustar criação de contexto")
+@Disabled("Teste pois rotina não está sendo usada, precisa de ajustes")
 @SpringBootTest(classes = ControleAcoesApplication.class)
 @ActiveProfiles("test")
 class AtualizaCotacaoDiariaTest {
