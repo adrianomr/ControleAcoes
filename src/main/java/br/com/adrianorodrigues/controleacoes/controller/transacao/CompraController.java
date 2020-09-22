@@ -1,7 +1,7 @@
-package br.com.adrianorodrigues.controleacoes.controller;
+package br.com.adrianorodrigues.controleacoes.controller.transacao;
 
 import br.com.adrianorodrigues.controleacoes.dto.TransacaoDTO;
-import br.com.adrianorodrigues.controleacoes.service.TransacaoService;
+import br.com.adrianorodrigues.controleacoes.service.transacao.CompraService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -12,19 +12,14 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("transacao")
-public class TransacaoController {
+public class CompraController {
     @Autowired
-    TransacaoService transacaoService;
+    CompraService compraService;
 
     @PostMapping(value = "/compra", consumes = "application/json")
     public String postCompra(@Valid @RequestBody TransacaoDTO transacao) {
-        transacaoService.compraAcao(transacao);
+        compraService.compraAcao(transacao);
         return "Compra realizada com sucesso";
     }
 
-    @PostMapping(value = "/venda", consumes = "application/json")
-    public String postVenda(@Valid @RequestBody TransacaoDTO transacao) {
-        transacaoService.vendaAcao(transacao);
-        return "Venda realizada com sucesso";
-    }
 }

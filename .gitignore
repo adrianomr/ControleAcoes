@@ -35,3 +35,4 @@ build/
 **/src/main/resources/cotacoes/zip/**
 **/src/main/resources/cotacoes/txt/**
 tmp/
+coverage/

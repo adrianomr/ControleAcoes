@@ -1,7 +1,7 @@
 package br.com.adrianorodrigues.controleacoes.repository;
 
 import br.com.adrianorodrigues.controleacoes.ControleAcoesApplication;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -19,6 +19,6 @@ class AcaoRepositoryTest {
     @Test
     void findByCodigoBdiAndTipoMercado() {
         List acaoList = acaoRepository.findByCodigoBdiInAndTipoMercado(Arrays.asList("02", "12"), 10);
-        Assertions.assertNotEquals(null, acaoList);
+        Assertions.assertThat(acaoList).isNotNull();
     }
 }

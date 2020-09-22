@@ -19,6 +19,4 @@ public class Usuario {
     private Long id;
     @Column
     private String nome;
-    @Transient
-    private Carteira carteira;
 }

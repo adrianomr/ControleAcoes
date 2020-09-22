@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.util.logging.Logger;
-
+@Disabled
 @SpringBootTest(classes = ControleAcoesApplication.class)
 @ActiveProfiles("test")
 class AlphavantageClientTest {

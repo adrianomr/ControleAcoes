@@ -13,6 +13,7 @@ import java.util.List;
 @Component
 public class CotacaoAtualService {
     public CotacaoAtualDTO getCotacaoAtual(String acao) throws IOException {
+        acao = acao.endsWith("F") ? acao.substring(0, acao.length() - 1) : acao;
         Document doc = Jsoup.connect("https://finance.yahoo.com/quote/" + acao + ".SA/?p=" + acao + ".SA").get();
         Elements quoteHeader = doc.select("#quote-header-info");
         List<String> strings = new ArrayList<>();

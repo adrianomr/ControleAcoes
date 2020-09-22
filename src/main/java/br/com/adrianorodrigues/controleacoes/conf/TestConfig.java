@@ -1,4 +1,4 @@
-package br.com.adrianorodrigues.controleacoes;
+package br.com.adrianorodrigues.controleacoes.conf;
 
 import br.com.adrianorodrigues.controleacoes.model.Acao;
 import br.com.adrianorodrigues.controleacoes.model.Usuario;
@@ -16,19 +16,15 @@ public class TestConfig {
     @Profile("test")
     public CommandLineRunner run(UsuarioRepository usuarioRepository, AcaoRepository acaoRepository, TransacaoRepository transacaoRepository) {
         return args -> {
-            transacaoRepository.deleteAll();
-            usuarioRepository.deleteAll();
-            acaoRepository.deleteAll();
             Usuario usuario = new Usuario();
-            usuario.setId(1l);
             usuario.setNome("Adriano");
-            usuarioRepository.save(usuario);
+            usuarioRepository.saveAndFlush(usuario);
             Acao acao = new Acao();
             acao.setCodigoBdi("02");
             acao.setNomeEmpresa("BTG Pactual Fundo de Fundos");
             acao.setPapel("BCFF11");
             acao.setTipoMercado(10);
-            acaoRepository.save(acao);
+            acaoRepository.saveAndFlush(acao);
         };
     }
 }
