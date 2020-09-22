@@ -1,18 +1,19 @@
 package br.com.adrianorodrigues.controleacoes.processor;
 
 import br.com.adrianorodrigues.controleacoes.ControleAcoesApplication;
+import br.com.adrianorodrigues.controleacoes.model.Acao;
 import br.com.adrianorodrigues.controleacoes.repository.AcaoRepository;
 import br.com.adrianorodrigues.controleacoes.util.FileUtil;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
 
-@Disabled("Teste desabilitado ate ajustar criação de contexto")
 @SpringBootTest(classes = ControleAcoesApplication.class)
 @ActiveProfiles({"test"})
 class ProcessSalvaBovespaCotacoesHistoricasSequencialTest {
@@ -46,7 +47,11 @@ class ProcessSalvaBovespaCotacoesHistoricasSequencialTest {
         criaArquivo(2);
         processSalvaAcoesHistoricasSequencial.execute();
         processSalvaBovespaCotacoesHistoricasSequencial.execute();
-        Assertions.assertEquals(1, acaoRepository.findAll().size());
+        List<Acao> acoesFiltradasPorPapel = acaoRepository
+                .findAll()
+                .stream()
+                .filter(acao -> acao.getPapel().equals("AALR3")).collect(Collectors.toList());
+        Assertions.assertEquals(1, acoesFiltradasPorPapel.size());
     }
 
     @Test
@@ -54,6 +59,10 @@ class ProcessSalvaBovespaCotacoesHistoricasSequencialTest {
         criaArquivo(1001);
         processSalvaAcoesHistoricasSequencial.execute();
         processSalvaBovespaCotacoesHistoricasSequencial.execute();
-        Assertions.assertEquals(1, acaoRepository.findAll().size());
+        List<Acao> acoesFiltradasPorPapel = acaoRepository
+                .findAll()
+                .stream()
+                .filter(acao -> acao.getPapel().equals("AALR3")).collect(Collectors.toList());
+        Assertions.assertEquals(1, acoesFiltradasPorPapel.size());
     }
 }
