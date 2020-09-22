@@ -85,12 +85,12 @@ public class CarteiraService {
                 acaoDTO.setQuantidade(quantidade);
                 acaoDTO.setPrecoMedio(valor);
                 RebalanceamentoAcao rebalanceamentoAcao = findRebalanceamentoByAcao(rebalanceamentoAcaoList, acaoDTO.getId());
-                acaoDTO.setPercentualRebalanceamento(
-                        rebalanceamentoAcao == null ? 0 : rebalanceamentoAcao.getPercentual()
-                );
+                double percentual = rebalanceamentoAcao == null ? 0 : rebalanceamentoAcao.getPercentual();
+                acaoDTO.setPercentualRebalanceamento(percentual);
                 try {
                     acaoDTO.setValor(cotacaoAtualService.getCotacaoAtual(acaoDTO.getPapel()).getCotacao());
                 } catch (IOException e) {
+                    acaoDTO.setValor(0d);
                     LogUtil.getLogger().error("Erro ao buscar cotacao atual", e);
                 }
             }
