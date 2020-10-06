@@ -1,0 +1,18 @@
+version: "3"
+services:
+  postgres:
+    image: postgres
+    expose:
+      - 5432
+    ports:
+      - 5433:5432
+    environment:
+      - POSTGRES_DB=controleAcoes
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+  spring-boot-containers:
+    build: .
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres

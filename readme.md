@@ -4,3 +4,4 @@ http://www.b3.com.br/data/files/C8/F3/08/B4/297BE410F816C9E492D828A8/SeriesHisto
 
 https://medium.com/responsive-br/versionando-o-banco-de-dados-com-liquibase-bfbf0b81d02f
 
+https://docs.docker.com/compose/gettingstarted/#step-4-build-and-run-your-app-with-compose
