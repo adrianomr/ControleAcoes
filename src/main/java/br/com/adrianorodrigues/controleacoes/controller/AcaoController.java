@@ -2,7 +2,7 @@ package br.com.adrianorodrigues.controleacoes.controller;
 
 import br.com.adrianorodrigues.controleacoes.dto.EmpresaMantenedoraDTO;
 import br.com.adrianorodrigues.controleacoes.model.Acao;
-import br.com.adrianorodrigues.controleacoes.service.AcaoService;
+import br.com.adrianorodrigues.controleacoes.service.acao.AcaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

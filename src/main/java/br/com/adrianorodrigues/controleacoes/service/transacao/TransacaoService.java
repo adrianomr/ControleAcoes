@@ -8,7 +8,7 @@ import br.com.adrianorodrigues.controleacoes.model.transacao.TipoTransacao;
 import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
 import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
 import br.com.adrianorodrigues.controleacoes.repository.UsuarioRepository;
-import br.com.adrianorodrigues.controleacoes.service.AcaoService;
+import br.com.adrianorodrigues.controleacoes.service.acao.AcaoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

@@ -8,7 +8,7 @@ import br.com.adrianorodrigues.controleacoes.dto.CotacoesBovespaDto;
 import br.com.adrianorodrigues.controleacoes.interfaces.ICallback;
 import br.com.adrianorodrigues.controleacoes.model.Acao;
 import br.com.adrianorodrigues.controleacoes.model.Cotacao;
-import br.com.adrianorodrigues.controleacoes.service.AcaoService;
+import br.com.adrianorodrigues.controleacoes.service.acao.AcaoService;
 import br.com.adrianorodrigues.controleacoes.service.CotacaoService;
 import br.com.adrianorodrigues.controleacoes.util.FileUtil;
 import br.com.adrianorodrigues.controleacoes.util.LogUtil;
@@ -33,9 +33,9 @@ public class ProcessSalvaBovespaCotacoesHistoricasSequencial {
     public int execute() {
         String folderName = "/cotacoes/txt";
         List<String> files = fileUtil.listFilesForFolder(folderName);
-        for (int i = 0; i < files.size(); i++) {
+        for (String file : files) {
             try {
-                fileUtil.readFile(folderName + "/" + files.get(i), new Callback());
+                fileUtil.readFile(folderName + "/" + file, new Callback());
             } catch (IOException e) {
                 LogUtil.getLogger().error(e.getMessage());
             }

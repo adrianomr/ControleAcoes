@@ -1,10 +1,12 @@
 package br.com.adrianorodrigues.controleacoes.conf;
 
+import com.amazon.sqs.javamessaging.ProviderConfiguration;
 import com.amazon.sqs.javamessaging.SQSConnectionFactory;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
-import com.amazonaws.internal.StaticCredentialsProvider;
-import com.amazonaws.regions.Region;
+import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
+import com.amazonaws.services.sqs.AmazonSQSClientBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -18,7 +20,7 @@ import org.springframework.jms.support.destination.DynamicDestinationResolver;
 import javax.jms.Session;
 
 @Configuration
-@PropertySource("classpath:aws-${aws-target:dev}")
+@PropertySource("classpath:aws-${aws-target:dev}.properties")
 @EnableJms
 public class AwsConfig {
 
@@ -32,10 +34,12 @@ public class AwsConfig {
 
     @Bean
     public SQSConnectionFactory createConnectionFactory() {
-        return SQSConnectionFactory.builder()
-                .withRegion(Region.getRegion(Regions.SA_EAST_1))
-                .withAWSCredentialsProvider(new StaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
-                .build();
+        return new SQSConnectionFactory(
+                new ProviderConfiguration(),
+                AmazonSQSClientBuilder.standard()
+                        .withEndpointConfiguration(new AwsClientBuilder.EndpointConfiguration("http://localhost:4566", Regions.US_EAST_1.getName()))
+                        .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secretKey)))
+        );
     }
 
     @Bean
@@ -44,7 +48,6 @@ public class AwsConfig {
         factory.setConnectionFactory(this.connectionFactory);
         factory.setDestinationResolver(new DynamicDestinationResolver());
         factory.setSessionAcknowledgeMode(Session.AUTO_ACKNOWLEDGE);
-
         return factory;
     }
 
@@ -52,4 +55,5 @@ public class AwsConfig {
     public JmsTemplate defaultJmsTemplate() {
         return new JmsTemplate(this.connectionFactory);
     }
+
 }

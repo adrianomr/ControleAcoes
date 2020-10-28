@@ -1,4 +1,4 @@
-package br.com.adrianorodrigues.controleacoes.service;
+package br.com.adrianorodrigues.controleacoes.service.acao;
 
 import br.com.adrianorodrigues.controleacoes.dto.EmpresaMantenedoraDTO;
 import br.com.adrianorodrigues.controleacoes.exception.ResourceNotFoundException;
@@ -20,6 +20,7 @@ public class AcaoService {
 
     @Autowired
     private AcaoRepository acaoRepository;
+    @Autowired FetchEmpresaMantenedoraAwsQueue fetchEmpresaMantenedoraAwsQueue;
 
     public Acao insertAcao(Acao acao) {
         return acaoRepository.save(acao);
@@ -58,8 +59,10 @@ public class AcaoService {
         return acaoRepository.findOneByPapel(papel);
     }
 
-    public Set<EmpresaMantenedoraDTO> getEmpresaControladora(String acao) {
-        Logger.getGlobal().info(acao);
+    public Set<EmpresaMantenedoraDTO> getEmpresaControladora(String papel) {
+        Logger.getGlobal().info(papel);
+        Acao acao = findAcaoByPapel(papel);
+        fetchEmpresaMantenedoraAwsQueue.sendMessage(acao);
         Set<EmpresaMantenedoraDTO> empresaMantenedoraDTOS = new HashSet<>();
         empresaMantenedoraDTOS.add(
                 EmpresaMantenedoraDTO
