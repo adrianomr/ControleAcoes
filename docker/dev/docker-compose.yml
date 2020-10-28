@@ -1,5 +1,6 @@
 version: "3"
 services:
+  # Postgres
   postgres:
     image: postgres
     expose:
@@ -39,7 +40,11 @@ services:
     volumes:
       - "${TMPDIR:-/tmp/localstack}:/tmp/localstack"
       - "/var/run/docker.sock:/var/run/docker.sock"
-
+  redis:
+    image: redis
+    command: redis-server --requirepass 123456
+    ports:
+      - "6379:6379"
 networks:
   postgres-compose-network:
     driver: bridge
