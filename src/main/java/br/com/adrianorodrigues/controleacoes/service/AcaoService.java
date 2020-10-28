@@ -1,5 +1,6 @@
 package br.com.adrianorodrigues.controleacoes.service;
 
+import br.com.adrianorodrigues.controleacoes.dto.EmpresaMantenedoraDTO;
 import br.com.adrianorodrigues.controleacoes.exception.ResourceNotFoundException;
 import br.com.adrianorodrigues.controleacoes.model.Acao;
 import br.com.adrianorodrigues.controleacoes.repository.AcaoRepository;
@@ -9,7 +10,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+import java.util.logging.Logger;
 
 @Component
 public class AcaoService {
@@ -52,5 +56,17 @@ public class AcaoService {
 
     public Acao findAcaoByPapel(String papel) {
         return acaoRepository.findOneByPapel(papel);
+    }
+
+    public Set<EmpresaMantenedoraDTO> getEmpresaControladora(String acao) {
+        Logger.getGlobal().info(acao);
+        Set<EmpresaMantenedoraDTO> empresaMantenedoraDTOS = new HashSet<>();
+        empresaMantenedoraDTOS.add(
+                EmpresaMantenedoraDTO
+                        .builder()
+                        .nome("Teste")
+                        .cnpj("Teste")
+                        .build());
+        return empresaMantenedoraDTOS;
     }
 }

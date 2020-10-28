@@ -19,7 +19,7 @@ public class AtualizaAcoesListadas {
     //Executa função de 12 em 12 horas
     //Valor em milisegundos
     @Scheduled(fixedDelay = 43200000)
-    public void atualizaAcoesListadas() {
+    public void scheduledProcedure() {
         ProcessDownloadBovespaCotacoesHistoricasDia.execute();
         ProcessUnzipBovespaCotacoesHistoricasDia.execute();
         processSalvaAcoesHistoricasSequencialDia.execute();
