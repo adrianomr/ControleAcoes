@@ -20,9 +20,9 @@ public class AtualizaAcoesListadas {
     //Valor em milisegundos
     @Scheduled(fixedDelay = 43200000)
     public void scheduledProcedure() {
-        ProcessDownloadBovespaCotacoesHistoricasDia.execute();
-        ProcessUnzipBovespaCotacoesHistoricasDia.execute();
-        processSalvaAcoesHistoricasSequencialDia.execute();
+            ProcessDownloadBovespaCotacoesHistoricasDia.execute();
+            ProcessUnzipBovespaCotacoesHistoricasDia.execute();
+            processSalvaAcoesHistoricasSequencialDia.execute();
     }
 
 }

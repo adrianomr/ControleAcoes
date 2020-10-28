@@ -11,6 +11,8 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.stereotype.Component;
 
 import javax.jms.JMSException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @Slf4j
@@ -29,16 +31,21 @@ public class FetchEmpresaMantenedoraAwsQueue {
     public void sendMessage(Acao acao) {
         jmsTemplate.convertAndSend(QUEUE_NAME, acao.getPapel());
     }
+
     @Autowired
     private RedisTemplate<Long, String> redisTemplate;
 
     public void save(Long id, String book) {
-        redisTemplate.opsForValue().set(id, book);
+        redisTemplate.opsForList().leftPush(id, book);
     }
 
-    public String findById(Long id) {
-        return redisTemplate.opsForValue().get(id);
+    public List<String> findById(Long id) {
+        Long size = redisTemplate.boundListOps(id).size();
+        if (size != null)
+            return redisTemplate.boundListOps(id).range(0, size);
+        return new ArrayList<>();
     }
+
     @JmsListener(destination = QUEUE_NAME)
     public void listener(String acao) {
         save(1L, acao);
