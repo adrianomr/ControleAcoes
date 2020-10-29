@@ -1,4 +1,4 @@
-package br.com.adrianorodrigues.controleacoes.component;
+package br.com.adrianorodrigues.controleacoes.util;
 
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;
@@ -14,8 +14,8 @@ import java.util.List;
 public class StartupLoggingComponent implements InitializingBean {
     private static final String ENV_TARGET_KEY = "envTarget";
     private static final String PERSISTENCE_TARGET_KEY = "persistenceTarget";
-    private static final String ACTIVE_SPRING_PROFILE_KEY = "spring.profiles.active";
     private static final String PERSISTENCE_HOST_KEY = "jdbc.url";
+    public static final String PATTERN = "{} = {}";
     private final Logger logger = LoggerFactory.getLogger(getClass());
     @Autowired
     private Environment env;
@@ -44,32 +44,30 @@ public class StartupLoggingComponent implements InitializingBean {
 
     private void logEnvTarget(final Environment environment) {
         final String envTarget = getValueOfProperty(environment, ENV_TARGET_KEY, "dev", Lists.newArrayList("dev"));
-        logger.info("{} = {}", ENV_TARGET_KEY, envTarget);
+        logger.info(PATTERN, ENV_TARGET_KEY, envTarget);
     }
 
     private void logPersistenceTarget(final Environment environment) {
         final String envTarget = getValueOfProperty(environment, PERSISTENCE_TARGET_KEY, "local", Lists.newArrayList("local", "dev", "prod"));
-        logger.info("{} = {}", PERSISTENCE_TARGET_KEY, envTarget);
+        logger.info(PATTERN, PERSISTENCE_TARGET_KEY, envTarget);
     }
 
     private void logPersistenceData(final Environment environment) {
         final String persistenceHost = getValueOfProperty(environment, PERSISTENCE_HOST_KEY, "not-found", null);
-        logger.info("{} = {}", PERSISTENCE_HOST_KEY, persistenceHost);
+        logger.info(PATTERN, PERSISTENCE_HOST_KEY, persistenceHost);
     }
 
     //
 
-    private final String getValueOfProperty(final Environment environment, final String propertyKey, final String propertyDefaultValue, final List<String> acceptablePropertyValues) {
+    private String getValueOfProperty(final Environment environment, final String propertyKey, final String propertyDefaultValue, final List<String> acceptablePropertyValues) {
         String propValue = environment.getProperty(propertyKey);
         if (propValue == null) {
             propValue = propertyDefaultValue;
             logger.info("The {} doesn't have an explicit value; default value is = {}", propertyKey, propertyDefaultValue);
         }
 
-        if (acceptablePropertyValues != null) {
-            if (!acceptablePropertyValues.contains(propValue)) {
-                logger.warn("The property = {} has an invalid value = {}", propertyKey, propValue);
-            }
+        if (acceptablePropertyValues != null && !acceptablePropertyValues.contains(propValue)) {
+            logger.warn("The property = {} has an invalid value = {}", propertyKey, propValue);
         }
 
         if (propValue == null) {
