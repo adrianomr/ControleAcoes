@@ -1,6 +1,8 @@
 package br.com.adrianorodrigues.controleacoes.dto;
 
-public class CotacoesBovespaDto {
+import java.io.Serializable;
+
+public class CotacoesBovespaDto implements Serializable {
     //N(2) 1 - 2
     private int tipoRegistro;
     //N(8) 3 - 10
