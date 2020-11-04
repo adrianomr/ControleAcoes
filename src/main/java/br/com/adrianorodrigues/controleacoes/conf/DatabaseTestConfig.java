@@ -1,21 +1,26 @@
 package br.com.adrianorodrigues.controleacoes.conf;
 
 import br.com.adrianorodrigues.controleacoes.model.Acao;
+import br.com.adrianorodrigues.controleacoes.model.EmpresaMantenedora;
 import br.com.adrianorodrigues.controleacoes.model.Usuario;
 import br.com.adrianorodrigues.controleacoes.repository.AcaoRepository;
-import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
+import br.com.adrianorodrigues.controleacoes.repository.EmpresaMantenedoraRepository;
 import br.com.adrianorodrigues.controleacoes.repository.UsuarioRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.time.LocalDateTime;
+
 @Configuration
-public class TestConfig {
+public class DatabaseTestConfig {
     @Bean
     @Profile("test")
-    public CommandLineRunner run(UsuarioRepository usuarioRepository, AcaoRepository acaoRepository, TransacaoRepository transacaoRepository) {
+    public CommandLineRunner run(UsuarioRepository usuarioRepository, AcaoRepository acaoRepository, EmpresaMantenedoraRepository empresaMantenedoraRepository) {
         return args -> {
+            usuarioRepository.deleteAll();
+            acaoRepository.deleteAll();
             Usuario usuario = new Usuario();
             usuario.setNome("Adriano");
             usuarioRepository.saveAndFlush(usuario);
@@ -24,7 +29,14 @@ public class TestConfig {
             acao.setNomeEmpresa("BTG Pactual Fundo de Fundos");
             acao.setPapel("BCFF11");
             acao.setTipoMercado(10);
-            acaoRepository.saveAndFlush(acao);
+            Acao acaoDB = acaoRepository.saveAndFlush(acao);
+            EmpresaMantenedora empresaMantenedora = EmpresaMantenedora
+                    .builder()
+                    .dataCadastro(LocalDateTime.now())
+                    .descricao("Empresa teste")
+                    .acao(acaoDB)
+                    .build();
+            empresaMantenedoraRepository.saveAndFlush(empresaMantenedora);
         };
     }
 }

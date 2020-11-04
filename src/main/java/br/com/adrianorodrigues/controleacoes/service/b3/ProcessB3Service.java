@@ -4,7 +4,7 @@ import br.com.adrianorodrigues.controleacoes.builder.CotacoesBovespaDtoBuilder;
 import br.com.adrianorodrigues.controleacoes.client.CotacaoCliente;
 import br.com.adrianorodrigues.controleacoes.dto.CotacoesBovespaDto;
 import br.com.adrianorodrigues.controleacoes.interfaces.ICallback;
-import br.com.adrianorodrigues.controleacoes.service.acao.AcaoRedisService;
+import br.com.adrianorodrigues.controleacoes.service.acao.CotacaoBovespaRedisService;
 import br.com.adrianorodrigues.controleacoes.util.FileUtil;
 import br.com.adrianorodrigues.controleacoes.util.ZipUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -18,7 +18,7 @@ import java.util.List;
 @Slf4j
 public class ProcessB3Service {
     @Autowired
-    private AcaoRedisService acaoRedisService;
+    private CotacaoBovespaRedisService cotacaoBovespaRedisService;
 
     public void process(int ano) throws IOException {
         log.info("Processando ano:" + ano);
@@ -45,7 +45,7 @@ public class ProcessB3Service {
         public void callback(Object result) {
             if (naoEhCabecalhoOuRodape(result)) {
                 CotacoesBovespaDto cotacoesBovespaDto = CotacoesBovespaDtoBuilder.build((String) result);
-                acaoRedisService.save(ano, cotacoesBovespaDto);
+                cotacaoBovespaRedisService.save(ano, cotacoesBovespaDto);
                 log.info(cotacoesBovespaDto.getCodigoPapel());
             }
         }

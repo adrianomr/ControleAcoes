@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class AcaoRedisService {
+public class CotacaoBovespaRedisService {
     @Autowired
     private RedisTemplate<Integer, CotacoesBovespaDto> redisTemplate;
 
@@ -22,5 +22,16 @@ public class AcaoRedisService {
         if (size != null)
             return redisTemplate.boundListOps(id).range(0, size);
         return new ArrayList<>();
+    }
+
+
+    public List<CotacoesBovespaDto> findByIdPaginated(int id, Long pageSize,Long page) {
+        Long begin = (page - 1) * pageSize;
+        Long end = page * pageSize;
+        return redisTemplate.boundListOps(id).range(begin, end);
+    }
+
+    public Long getSize(int id){
+        return redisTemplate.boundListOps(id).size();
     }
 }

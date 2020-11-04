@@ -7,6 +7,5 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmpresaMantenedoraDTO {
-    String nome;
-    String cnpj;
+    String descricao;
 }

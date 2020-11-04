@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 @ExtendWith(MockitoExtension.class)
-class AcaoRedisServiceTest {
+class CotacaoBovespaRedisServiceTest {
     @Mock
     RedisTemplate<Integer, CotacoesBovespaDto> redisTemplate;
     @Mock
@@ -28,7 +28,7 @@ class AcaoRedisServiceTest {
     @Mock
     BoundListOperations<Integer, CotacoesBovespaDto> boundListOperationsHasNoData;
     @InjectMocks
-    AcaoRedisService acaoRedisService;
+    CotacaoBovespaRedisService cotacaoBovespaRedisService;
     private List<CotacoesBovespaDto> acoesExpected;
     CotacoesBovespaDto cotacoesBovespaDto;
     @BeforeEach
@@ -44,25 +44,25 @@ class AcaoRedisServiceTest {
 
     @Test
     void save() {
-        acaoRedisService.save(1, cotacoesBovespaDto);
+        cotacaoBovespaRedisService.save(1, cotacoesBovespaDto);
         Mockito.verify(listOperations).leftPush(1, cotacoesBovespaDto);
     }
 
     @Test
     void findByIdShouldReturnList() {
-        List<CotacoesBovespaDto> acoes = acaoRedisService.findById(1);
+        List<CotacoesBovespaDto> acoes = cotacaoBovespaRedisService.findById(1);
         Assertions.assertEquals(acoesExpected, acoes);
     }
     @Test
     void findByIdWhenSizeZeroShouldReturnEmptyList() {
         Mockito.when(boundListOperationsHasNoData.size()).thenReturn(0L);
-        List<CotacoesBovespaDto> acoes = acaoRedisService.findById(2);
+        List<CotacoesBovespaDto> acoes = cotacaoBovespaRedisService.findById(2);
         Assertions.assertEquals(new ArrayList<>(), acoes);
     }
     @Test
     void findByIdWhenSizeNullShouldReturnEmptyList() {
         Mockito.when(boundListOperationsHasNoData.size()).thenReturn(null);
-        List<CotacoesBovespaDto> acoes = acaoRedisService.findById(2);
+        List<CotacoesBovespaDto> acoes = cotacaoBovespaRedisService.findById(2);
         Assertions.assertEquals(new ArrayList<>(), acoes);
     }
 }
