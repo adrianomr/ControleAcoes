@@ -9,7 +9,10 @@ public class EmpresaMantenedoraDtoMapper {
     public static EmpresaMantenedoraDtoMapper from(EmpresaMantenedora empresaMantenedora){
         EmpresaMantenedoraDTO empresaMantenedoraDTO = EmpresaMantenedoraDTO
                 .builder()
+                .id(empresaMantenedora.getId())
                 .descricao(empresaMantenedora.getDescricao())
+                .cnpj(empresaMantenedora.getCnpj())
+                .idAcao(empresaMantenedora.getAcao().getId())
                 .build();
         return EmpresaMantenedoraDtoMapper
                 .builder()

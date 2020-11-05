@@ -5,6 +5,8 @@ create table empresa_mantenedora (
         cnpj int8,
         descricao varchar(100),
         data_cadastro timestamp,
+        data_inicio date,
+        data_fim date,
         primary key (id)
     );
 

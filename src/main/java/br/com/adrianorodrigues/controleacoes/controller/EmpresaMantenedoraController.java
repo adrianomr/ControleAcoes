@@ -9,18 +9,29 @@ import javax.validation.Valid;
 import java.util.Set;
 
 @RestController
-@RequestMapping("empresa-controladora")
+@RequestMapping(value = "empresa-controladora")
 public class EmpresaMantenedoraController {
     @Autowired
     EmpresaMantenedoraService empresaMantenedoraService;
 
-    @GetMapping()
-    public Set<EmpresaMantenedoraDTO> getContas(@RequestParam("idAcao") Long idAcao) {
+    @GetMapping
+    public Set<EmpresaMantenedoraDTO> get(@RequestParam("idAcao") Long idAcao) {
         return empresaMantenedoraService.getEmpresaControladora(idAcao);
     }
 
     @PostMapping(consumes = "application/json")
-    public EmpresaMantenedoraDTO postRebalanceamento(@Valid @RequestBody EmpresaMantenedoraDTO empresaMantenedoraDTO) {
+    public EmpresaMantenedoraDTO post(@Valid @RequestBody EmpresaMantenedoraDTO empresaMantenedoraDTO) {
         return empresaMantenedoraService.save(empresaMantenedoraDTO);
+    }
+
+    @PutMapping(value = "{id}", consumes = "application/json")
+    public EmpresaMantenedoraDTO put(@PathVariable Long id, @Valid @RequestBody EmpresaMantenedoraDTO empresaMantenedoraDTO) {
+        empresaMantenedoraDTO.setId(id);
+        return empresaMantenedoraService.save(empresaMantenedoraDTO);
+    }
+
+    @DeleteMapping("{id}")
+    public void delete(@PathVariable Long id){
+        empresaMantenedoraService.delete(id);
     }
 }

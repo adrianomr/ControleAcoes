@@ -7,5 +7,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class EmpresaMantenedoraDTO {
+    Long id;
     String descricao;
+    Long cnpj;
+    Long idAcao;
 }
