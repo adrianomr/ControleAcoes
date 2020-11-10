@@ -36,7 +36,7 @@ class TransacaoServiceIntegrationTest {
     @Test
     void compraAcao() {
         transacaoRepository.deleteAll();
-        TransacaoDTO transacaoDTO = new TransacaoDTO();
+        TransacaoDTO transacaoDTO = TransacaoDTO.builder().build();
         transacaoDTO.setIdUsuario(usuario.getId());
         transacaoDTO.setPapel("BCFF11");
         transacaoDTO.setData(LocalDateTime.now());
@@ -49,7 +49,7 @@ class TransacaoServiceIntegrationTest {
     @Test
     void compraAcaoQuandoAcaoNaoExistirInsereAcao() {
         transacaoRepository.deleteAll();
-        TransacaoDTO transacaoDTO = new TransacaoDTO();
+        TransacaoDTO transacaoDTO = TransacaoDTO.builder().build();
         transacaoDTO.setIdUsuario(usuario.getId());
         transacaoDTO.setPapel("ITUB3");
         transacaoDTO.setValor(90d);
@@ -62,7 +62,7 @@ class TransacaoServiceIntegrationTest {
     @Test
     void vendaAcao() {
         transacaoRepository.deleteAll();
-        TransacaoDTO transacaoDTO = new TransacaoDTO();
+        TransacaoDTO transacaoDTO = TransacaoDTO.builder().build();
         transacaoDTO.setIdUsuario(usuario.getId());
         transacaoDTO.setPapel("BCFF11");
         transacaoDTO.setValor(90d);
@@ -75,7 +75,7 @@ class TransacaoServiceIntegrationTest {
     @Test
     void vendaAcaoQuandoAcaoNaoExistirInsereAcao() {
         transacaoRepository.deleteAll();
-        TransacaoDTO transacaoDTO = new TransacaoDTO();
+        TransacaoDTO transacaoDTO = TransacaoDTO.builder().build();
         transacaoDTO.setIdUsuario(usuario.getId());
         transacaoDTO.setPapel("ITUB3");
         transacaoDTO.setValor(90d);
@@ -88,7 +88,7 @@ class TransacaoServiceIntegrationTest {
     @Test
     void deleteTransacao() {
         transacaoRepository.deleteAll();
-        TransacaoDTO transacaoDTO = new TransacaoDTO();
+        TransacaoDTO transacaoDTO = TransacaoDTO.builder().build();
         transacaoDTO.setIdUsuario(usuario.getId());
         transacaoDTO.setPapel("BCFF11");
         transacaoDTO.setData(LocalDateTime.now());

@@ -9,14 +9,20 @@ import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
 import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
 import br.com.adrianorodrigues.controleacoes.repository.UsuarioRepository;
 import br.com.adrianorodrigues.controleacoes.service.acao.AcaoService;
+import br.com.adrianorodrigues.controleacoes.util.ExcelUtil;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class TransacaoService {
     @Autowired
     AcaoService acaoService;
@@ -52,15 +58,16 @@ public class TransacaoService {
 
     public List<TransacaoDTO> findAllTransacaoes() {
         return transacaoRepository.findAll().stream().map(transacao -> {
-            TransacaoDTO transacaoDTO = new TransacaoDTO();
-            transacaoDTO.setId(transacao.getId());
-            transacaoDTO.setPapel(transacao.getAcao().getPapel());
             int fator = transacao.getTipoTransacao().equals(TipoTransacao.COMPRA) ? 1 : -1;
-            transacaoDTO.setValor(fator * transacao.getValor().doubleValue());
-            transacaoDTO.setIdUsuario(transacao.getUsuario().getId());
-            transacaoDTO.setQuantidade(transacao.getQuantidade());
-            transacaoDTO.setData(transacao.getData());
-            return transacaoDTO;
+            return TransacaoDTO
+                    .builder()
+                    .id(transacao.getId())
+                    .papel(transacao.getAcao().getPapel())
+                    .valor(fator * transacao.getValor().doubleValue())
+                    .idUsuario(transacao.getUsuario().getId())
+                    .quantidade(transacao.getQuantidade())
+                    .data(transacao.getData())
+                    .build();
         }).collect(Collectors.toList());
     }
 
@@ -68,5 +75,10 @@ public class TransacaoService {
         Transacao transacao = new Transacao();
         transacao.setId(id);
         transacaoRepository.delete(transacao);
+    }
+
+    public void importTransacaoList(MultipartFile file, Long idUsuario) throws IOException {
+        Sheet sheet = ExcelUtil.getSheet(file);
+        ExcelUtil.processRows(sheet, new ImportTransacaoService(this, idUsuario), 11);
     }
 }

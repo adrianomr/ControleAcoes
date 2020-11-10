@@ -58,4 +58,5 @@ public class AcaoService {
     public Acao findAcaoByPapel(String papel) {
         return acaoRepository.findOneByPapel(papel);
     }
+
 }
