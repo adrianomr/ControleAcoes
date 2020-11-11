@@ -26,11 +26,12 @@ public class ImportTransacaoService implements ICallback<Row> {
         String papel = row.getCell(6).getStringCellValue().trim().toUpperCase();
         if(!papel.isEmpty() && !endFile) {
             String tipoTransacaoString = row.getCell(3).getStringCellValue().trim();
-            int quantidade = (int) row.getCell(9).getNumericCellValue();
-            Double valor = row.getCell(10).getNumericCellValue();
+            int quantidade = (int) row.getCell(8).getNumericCellValue();
+            Double valor = row.getCell(9).getNumericCellValue();
             LocalDateTime data = DateFromStringUtil.getLocalDate(row.getCell(1).getStringCellValue().trim());
             if (papel.endsWith("F"))
                 papel = papel.substring(0, papel.length() - 1);
+            //TODO: put on a mapper class
             TransacaoDTO transacaoDTO = TransacaoDTO
                     .builder()
                     .papel(papel)
@@ -43,6 +44,7 @@ public class ImportTransacaoService implements ICallback<Row> {
                     TipoTransacao.COMPRA : TipoTransacao.VENDA;
             log.info(tipoTransacao.getNome());
             log.info(transacaoDTO.toString());
+            transacaoService.saveTrasacao(transacaoDTO, tipoTransacao);
         }else {
             endFile = true;
         }
