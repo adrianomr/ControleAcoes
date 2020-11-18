@@ -1,0 +1,418 @@
+{
+	"info": {
+		"_postman_id": "b1b214ae-4c12-4c2b-8f71-7079ec2f6d29",
+		"name": "controle-acoes",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Empresa Controladora",
+			"item": [
+				{
+					"name": "empresa controladora",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/empresa-controladora?idAcao=785",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"empresa-controladora"
+							],
+							"query": [
+								{
+									"key": "idAcao",
+									"value": "785"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "post empresa controladora",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"descricao\": \"teste\",\n    \"cnpj\": 123456789,\n    \"dataInicio\": \"01/01/2019\",\n    \"idAcao\": 785\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/empresa-controladora",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"empresa-controladora"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "put empresa controladora",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"descricao\": \"teste\",\n    \"cnpj\": 123456789,\n    \"dataInicio\": \"01/01/2019\",\n    \"dataFim\": \"01/01/2020\",\n    \"idAcao\": 785\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/empresa-controladora/10512",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"empresa-controladora",
+								"10512"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "delete empresa controladora",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/empresa-controladora/10512",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"empresa-controladora",
+								"10512"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Carteira",
+			"item": [
+				{
+					"name": "carteira global",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/1/carteira",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"1",
+								"carteira"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "carteira",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/carteira?idUsuario=1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"carteira"
+							],
+							"query": [
+								{
+									"key": "idUsuario",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "carteira",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"idCorretora\": 1,\n  \"idUsuario\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/carteira",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"carteira"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Usuario",
+			"item": [
+				{
+					"name": "usuario",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/usuario/1",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"usuario",
+								"1"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Proventos",
+			"item": [
+				{
+					"name": "proventos",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": \"2020-11-16\",\n  \"papel\": \"BCFF11\",\n  \"valor\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/provento",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"provento"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "proventos",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"data\": \"2020-11-16\",\n  \"papel\": \"BCFF11\",\n  \"valor\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/provento?idAcao=729",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"provento"
+							],
+							"query": [
+								{
+									"key": "idAcao",
+									"value": "729"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Corretora",
+			"item": [
+				{
+					"name": "corretora",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/corretora",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"corretora"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Acao",
+			"item": [
+				{
+					"name": "acao",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/acao?papel=BCFF11",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"acao"
+							],
+							"query": [
+								{
+									"key": "papel",
+									"value": "BCFF11"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "acao from excel",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/adriano.rodrigues/Downloads/InfoCEI - Negociacoes.xls"
+						},
+						{
+							"key": "idUsuario",
+							"value": "1",
+							"type": "text"
+						},
+						{
+							"key": "idCorretora",
+							"value": "1",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transacao/excel",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transacao",
+						"excel"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "acao from excel rico",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/Users/adriano.rodrigues/Downloads/InfoCEI - Negociacoes Rico.xls"
+						},
+						{
+							"key": "idUsuario",
+							"value": "1",
+							"type": "text"
+						}
+					],
+					"options": {
+						"formdata": {}
+					}
+				},
+				"url": {
+					"raw": "localhost:8080/transacao/excel",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"transacao",
+						"excel"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
