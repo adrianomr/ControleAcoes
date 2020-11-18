@@ -16,6 +16,8 @@ public class TransacaoDTO {
     @NotNull
     private Long idUsuario;
     @NotNull
+    private Long idCarteira;
+    @NotNull
     private LocalDateTime data;
     @NotNull
     private String papel;

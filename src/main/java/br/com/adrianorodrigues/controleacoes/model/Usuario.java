@@ -19,4 +19,6 @@ public class Usuario {
     private Long id;
     @Column
     private String nome;
+    @Column
+    private String username;
 }

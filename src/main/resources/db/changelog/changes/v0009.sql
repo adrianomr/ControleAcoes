@@ -1,0 +1,1 @@
+insert into corretora values (1, 'Clear');

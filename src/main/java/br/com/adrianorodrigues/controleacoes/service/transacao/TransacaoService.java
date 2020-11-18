@@ -3,11 +3,13 @@ package br.com.adrianorodrigues.controleacoes.service.transacao;
 import br.com.adrianorodrigues.controleacoes.dto.TransacaoDTO;
 import br.com.adrianorodrigues.controleacoes.exception.ResourceNotFoundException;
 import br.com.adrianorodrigues.controleacoes.model.Acao;
+import br.com.adrianorodrigues.controleacoes.model.Carteira;
 import br.com.adrianorodrigues.controleacoes.model.Usuario;
 import br.com.adrianorodrigues.controleacoes.model.transacao.TipoTransacao;
 import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
 import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
 import br.com.adrianorodrigues.controleacoes.repository.UsuarioRepository;
+import br.com.adrianorodrigues.controleacoes.service.CarteiraService;
 import br.com.adrianorodrigues.controleacoes.service.acao.AcaoService;
 import br.com.adrianorodrigues.controleacoes.util.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -30,6 +32,8 @@ public class TransacaoService {
     UsuarioRepository usuarioRepository;
     @Autowired
     TransacaoRepository transacaoRepository;
+    @Autowired
+    CarteiraService carteiraService;
 
     private Acao findOrCreateAcao(String papel) {
         Acao acao = acaoService.findAcaoByPapel(papel);
@@ -46,6 +50,7 @@ public class TransacaoService {
         Usuario usuario = usuarioRepository
                 .findById(transacaoDTO.getIdUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não existe"));
+        Carteira carteira = carteiraService.findCarteiraById(transacaoDTO.getIdCarteira());
         Transacao transacao = new Transacao();
         transacao.setData(transacaoDTO.getData());
         transacao.setAcao(acao);
@@ -53,6 +58,7 @@ public class TransacaoService {
         transacao.setQuantidade(transacaoDTO.getQuantidade());
         transacao.setValor(BigDecimal.valueOf(transacaoDTO.getValor()));
         transacao.setUsuario(usuario);
+        transacao.setCarteira(carteira);
         transacaoRepository.save(transacao);
     }
 
@@ -77,8 +83,9 @@ public class TransacaoService {
         transacaoRepository.delete(transacao);
     }
 
-    public void importTransacaoList(MultipartFile file, Long idUsuario) throws IOException {
+    public void importTransacaoList(MultipartFile file, Long idUsuario, Long idCorretora) throws IOException {
         Sheet sheet = ExcelUtil.getSheet(file);
-        ExcelUtil.processRows(sheet, new ImportTransacaoService(this, idUsuario), 11);
+        Carteira carteira = carteiraService.findCarteiraByCorretoraAndUsuario(idCorretora, idUsuario);
+        ExcelUtil.processRows(sheet, new ImportTransacaoService(this, idUsuario, carteira.getId()), 11);
     }
 }

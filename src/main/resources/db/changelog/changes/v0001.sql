@@ -26,7 +26,7 @@ create table acao (
 
     create table provento (
         id int8 not null,
-        data_pagamento timestamp,
+        data_pagamento date,
         valor numeric(19, 2),
         acao_id int8,
         primary key (id)

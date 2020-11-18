@@ -2,6 +2,7 @@ package br.com.adrianorodrigues.controleacoes.model.transacao;
 
 
 import br.com.adrianorodrigues.controleacoes.model.Acao;
+import br.com.adrianorodrigues.controleacoes.model.Carteira;
 import br.com.adrianorodrigues.controleacoes.model.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -43,4 +44,7 @@ public class Transacao {
     @NotNull
     @JoinColumn(name = "usuario_id")
     private Usuario usuario;
+    @ManyToOne
+    @JoinColumn(name = "carteira_id")
+    private Carteira carteira;
 }

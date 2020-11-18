@@ -6,24 +6,17 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
-import java.time.LocalDate;
 
 @Entity
-@Table(name = "provento")
-@AllArgsConstructor
+@Table(name = "corretora")
 @Data
+@AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Provento {
+public class Corretora {
     @Id
     @GeneratedValue
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "acao_id")
-    private Acao acao;
     @Column
-    private LocalDate dataPagamento;
-    @Column
-    private BigDecimal valor;
+    private String nome;
 }

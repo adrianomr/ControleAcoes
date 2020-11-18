@@ -12,6 +12,9 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class CarteiraDTO {
+    private Long id;
+    private Long idCorretora;
+    private Long idUsuario;
     private Double valorInvestido;
     private Double valorAtual;
     private Double lucroPrejuizo;

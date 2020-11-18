@@ -26,8 +26,8 @@ public class TransacaoController {
     }
 
     @PostMapping("/excel")
-    public void importAcaoList(MultipartFile file, Long idUsuario) throws IOException {
-        transacaoService.importTransacaoList(file, idUsuario);
+    public void importAcaoList(MultipartFile file, Long idUsuario, Long idCorretora) throws IOException {
+        transacaoService.importTransacaoList(file, idUsuario, idCorretora);
     }
 
 }
