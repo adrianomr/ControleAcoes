@@ -1,7 +1,10 @@
 package br.com.adrianorodrigues.controleacoes.dto;
 
+import lombok.ToString;
+
 import java.io.Serializable;
 
+@ToString
 public class CotacoesBovespaDto implements Serializable {
     //N(2) 1 - 2
     private int tipoRegistro;
@@ -224,29 +227,4 @@ public class CotacoesBovespaDto implements Serializable {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return "CotacoesBovespaDto{" +
-                "tipoRegistro=" + tipoRegistro +
-                ", data='" + data + '\'' +
-                ", codigoBdi='" + codigoBdi + '\'' +
-                ", codNegociacaoPapel='" + codNegociacaoPapel + '\'' +
-                ", tipoMercado=" + tipoMercado +
-                ", nomeResumidoEmpresaEmissora='" + nomeResumidoEmpresaEmissora + '\'' +
-                ", especificacaoPapel='" + especificacaoPapel + '\'' +
-                ", prazoMercadoTermo='" + prazoMercadoTermo + '\'' +
-                ", moedaReferencia='" + moedaReferencia + '\'' +
-                ", precoAbertura=" + precoAbertura +
-                ", precoMaximo=" + precoMaximo +
-                ", precoMinimo=" + precoMinimo +
-                ", precoMedio=" + precoMedio +
-                ", precoUltimoNegocio=" + precoUltimoNegocio +
-                ", precoMelhorOfertaCompra=" + precoMelhorOfertaCompra +
-                ", precoMelhorOfertaVenda=" + precoMelhorOfertaVenda +
-                ", numeroNegociosEfetuados=" + numeroNegociosEfetuados +
-                ", quantidadeTitulosNegociados=" + quantidadeTitulosNegociados +
-                ", volumeTotalTitulos=" + volumeTotalTitulos +
-                ", codigoPapel='" + codigoPapel + '\'' +
-                '}';
-    }
 }

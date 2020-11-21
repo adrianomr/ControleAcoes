@@ -15,5 +15,6 @@ public class ProventoDTO {
     Long id;
     String papel;
     LocalDate data;
+    LocalDate dataPosicao;
     Double valor;
 }

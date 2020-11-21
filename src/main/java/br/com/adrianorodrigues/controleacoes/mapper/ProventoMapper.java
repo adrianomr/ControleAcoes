@@ -16,6 +16,7 @@ public class ProventoMapper {
                 .builder()
                 .id(proventoDTO.getId())
                 .dataPagamento(proventoDTO.getData())
+                .dataPosicao(proventoDTO.getDataPosicao())
                 .acao(acao)
                 .valor(BigDecimal.valueOf(proventoDTO.getValor()))
                 .build();

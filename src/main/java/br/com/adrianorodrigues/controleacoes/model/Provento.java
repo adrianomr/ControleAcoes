@@ -1,9 +1,6 @@
 package br.com.adrianorodrigues.controleacoes.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -15,6 +12,7 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 @Builder
+@ToString
 public class Provento {
     @Id
     @GeneratedValue
@@ -24,6 +22,8 @@ public class Provento {
     private Acao acao;
     @Column
     private LocalDate dataPagamento;
+    @Column
+    private LocalDate dataPosicao;
     @Column
     private BigDecimal valor;
 }

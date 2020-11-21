@@ -1,4 +1,4 @@
-package br.com.adrianorodrigues.controleacoes.util;
+package br.com.adrianorodrigues.controleacoes.conf;
 
 import com.google.common.collect.Lists;
 import org.slf4j.Logger;

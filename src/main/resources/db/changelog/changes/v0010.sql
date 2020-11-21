@@ -1,0 +1,1 @@
+alter table provento add column data_posicao date;

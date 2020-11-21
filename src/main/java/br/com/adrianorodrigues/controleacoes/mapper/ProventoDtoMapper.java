@@ -13,6 +13,7 @@ public class ProventoDtoMapper {
                 .builder()
                 .id(provento.getId())
                 .data(provento.getDataPagamento())
+                .dataPosicao(provento.getDataPosicao())
                 .papel(provento.getAcao().getPapel())
                 .valor(provento.getValor().doubleValue())
                 .build();

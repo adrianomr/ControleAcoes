@@ -1,11 +1,13 @@
 package br.com.adrianorodrigues.controleacoes.controller;
 
 import br.com.adrianorodrigues.controleacoes.dto.ProventoDTO;
-import br.com.adrianorodrigues.controleacoes.service.ProventoService;
+import br.com.adrianorodrigues.controleacoes.service.provento.ProventoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.Set;
 
 @RestController
@@ -31,7 +33,12 @@ public class ProventoController {
     }
 
     @DeleteMapping("{id}")
-    public void delete(@PathVariable Long id){
+    public void delete(@PathVariable Long id) {
         proventoService.delete(id);
+    }
+
+    @PostMapping("/excel")
+    public void importAcaoList(MultipartFile file) throws IOException {
+        proventoService.importProventoList(file);
     }
 }

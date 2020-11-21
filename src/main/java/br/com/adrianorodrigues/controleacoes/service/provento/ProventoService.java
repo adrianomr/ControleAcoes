@@ -1,4 +1,4 @@
-package br.com.adrianorodrigues.controleacoes.service;
+package br.com.adrianorodrigues.controleacoes.service.provento;
 
 import br.com.adrianorodrigues.controleacoes.dto.ProventoDTO;
 import br.com.adrianorodrigues.controleacoes.mapper.ProventoDtoMapper;
@@ -10,10 +10,14 @@ import br.com.adrianorodrigues.controleacoes.service.acao.AcaoService;
 import br.com.adrianorodrigues.controleacoes.service.acao.CotacaoBovespaRedisService;
 import br.com.adrianorodrigues.controleacoes.service.b3.AnosEmCacheSet;
 import br.com.adrianorodrigues.controleacoes.service.b3.FetchB3DataAwsQueue;
+import br.com.adrianorodrigues.controleacoes.util.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Sheet;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -62,5 +66,10 @@ public class ProventoService {
 
     public void delete(Long id) {
         proventoRepository.deleteById(id);
+    }
+
+    public void importProventoList(MultipartFile file) throws IOException {
+        Sheet sheet = ExcelUtil.getSheet(file);
+        ExcelUtil.processRows(sheet, new ImportProventoService(this), 1);
     }
 }
