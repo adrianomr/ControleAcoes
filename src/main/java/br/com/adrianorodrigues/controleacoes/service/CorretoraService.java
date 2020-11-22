@@ -7,8 +7,7 @@ import br.com.adrianorodrigues.controleacoes.repository.CorretoraRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.Set;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Component
 public class CorretoraService implements CrudService<Corretora> {
@@ -17,9 +16,8 @@ public class CorretoraService implements CrudService<Corretora> {
     CorretoraRepository corretoraRepository;
 
     @Override
-    public Set<Corretora> find() {
-        return corretoraRepository
-                .findAll().stream().collect(Collectors.toSet());
+    public List<Corretora> find() {
+        return corretoraRepository.findAll();
     }
 
     public Corretora find(Long id) {

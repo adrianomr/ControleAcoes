@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Set;
+import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -18,10 +18,10 @@ public class CorretoraController {
     CorretoraService corretoraService;
 
     @GetMapping
-    public Set<CorretoraDTO> get() {
+    public List<CorretoraDTO> get() {
         return corretoraService.find().stream()
                 .map((corretora -> CorretoraDtoMapper.from(corretora).map()))
-                .collect(Collectors.toSet());
+                .collect(Collectors.toList());
     }
     
     @GetMapping("{id}")

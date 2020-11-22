@@ -2,6 +2,7 @@ package br.com.adrianorodrigues.controleacoes.service.transacao;
 
 import br.com.adrianorodrigues.controleacoes.dto.TransacaoDTO;
 import br.com.adrianorodrigues.controleacoes.exception.ResourceNotFoundException;
+import br.com.adrianorodrigues.controleacoes.mapper.TransacaoMapper;
 import br.com.adrianorodrigues.controleacoes.model.Acao;
 import br.com.adrianorodrigues.controleacoes.model.Carteira;
 import br.com.adrianorodrigues.controleacoes.model.Usuario;
@@ -19,7 +20,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -51,14 +51,12 @@ public class TransacaoService {
                 .findById(transacaoDTO.getIdUsuario())
                 .orElseThrow(() -> new ResourceNotFoundException("Usuário não existe"));
         Carteira carteira = carteiraService.findCarteiraById(transacaoDTO.getIdCarteira());
-        Transacao transacao = new Transacao();
-        transacao.setData(transacaoDTO.getData());
-        transacao.setAcao(acao);
-        transacao.setTipoTransacao(tipoTransacao);
-        transacao.setQuantidade(transacaoDTO.getQuantidade());
-        transacao.setValor(BigDecimal.valueOf(transacaoDTO.getValor()));
-        transacao.setUsuario(usuario);
-        transacao.setCarteira(carteira);
+        saveTrasacao(TransacaoMapper
+                .from(transacaoDTO, tipoTransacao, usuario, carteira, acao)
+                .map());
+    }
+
+    public void saveTrasacao(Transacao transacao) {
         transacaoRepository.save(transacao);
     }
 
