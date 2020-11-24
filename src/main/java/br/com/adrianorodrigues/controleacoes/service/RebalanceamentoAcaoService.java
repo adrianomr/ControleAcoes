@@ -2,7 +2,6 @@ package br.com.adrianorodrigues.controleacoes.service;
 
 import br.com.adrianorodrigues.controleacoes.dto.AcaoDTO;
 import br.com.adrianorodrigues.controleacoes.dto.CarteiraDTO;
-import br.com.adrianorodrigues.controleacoes.exception.ValidationException;
 import br.com.adrianorodrigues.controleacoes.model.RebalanceamentoAcao;
 import br.com.adrianorodrigues.controleacoes.model.Usuario;
 import br.com.adrianorodrigues.controleacoes.repository.RebalanceamentoAcaoRepository;
@@ -25,15 +24,11 @@ public class RebalanceamentoAcaoService {
     private CarteiraService carteiraService;
 
     public void save(RebalanceamentoAcao rebalanceamentoAcao) {
-        if (rebalanceamentoAcao.getNota() != null && rebalanceamentoAcao.getPercentual() != null)
-            throw new ValidationException("Não é possível registrar nota e percentual");
         rebalanceamentoAcaoRepository.save(rebalanceamentoAcao);
     }
 
     public void delete(Long id) {
-        RebalanceamentoAcao rebalanceamentoAcao = new RebalanceamentoAcao();
-        rebalanceamentoAcao.setId(id);
-        rebalanceamentoAcaoRepository.delete(rebalanceamentoAcao);
+        rebalanceamentoAcaoRepository.deleteById(id);
     }
 
     public List<RebalanceamentoAcao> findAllByUsuario(Long idUsuario) {

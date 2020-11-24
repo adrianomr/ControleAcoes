@@ -16,10 +16,14 @@ public class UsuarioService {
     UsuarioRepository usuarioRepository;
 
     public UsuarioDTO getUser(Long id) {
-        Usuario usuario = usuarioRepository
+        Usuario usuario = findUsuarioById(id);
+        return UsuarioDtoMapper.from(usuario).map();
+    }
+
+    public Usuario findUsuarioById(Long id) {
+        return usuarioRepository
                 .findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario nao encontrado"));
-        return UsuarioDtoMapper.from(usuario).map();
     }
 
     public UsuarioDTO saveUser(UsuarioDTO usuarioDTO) {

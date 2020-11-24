@@ -1,7 +1,14 @@
 package br.com.adrianorodrigues.controleacoes.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+
 import javax.persistence.*;
 
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "rebalanceamento_acao")
 public class RebalanceamentoAcao {
