@@ -15,7 +15,7 @@ public class SubscricaoDtoMapper {
                 .data(subscricao.getData())
                 .papel(subscricao.getAcao().getPapel())
                 .valor(subscricao.getValor().doubleValue())
-                .idCarteira(subscricao.getCarteira().getId())
+                .idCorretora(subscricao.getCarteira().getCorretora().getId())
                 .idUsuario(subscricao.getUsuario().getId())
                 .quantidade(subscricao.getQuantidade())
                 .build();

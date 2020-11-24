@@ -15,7 +15,7 @@ public class SubscricaoDTO {
     @NotNull
     private Long idUsuario;
     @NotNull
-    private Long idCarteira;
+    private Long idCorretora;
     @NotNull
     private LocalDate data;
     @NotNull

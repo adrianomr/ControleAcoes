@@ -119,7 +119,7 @@ public class CarteiraService {
         return save(CarteiraMapper.from(carteiraDTO, corretora, usuario).map());
     }
 
-    public Carteira save(Carteira carteira){
+    public Carteira save(Carteira carteira) {
         return carteiraRepository.save(carteira);
     }
 
@@ -130,7 +130,12 @@ public class CarteiraService {
     public Carteira findCarteiraByCorretoraAndUsuario(Long idCorretora, Long idUsuario) {
         return carteiraRepository
                 .findByCorretoraIdAndUsuarioId(idCorretora, idUsuario)
-                .orElseThrow(()-> new ResourceNotFoundException("Carteira não encontrada"));
+                .orElseGet(() ->
+                        save(CarteiraDTO
+                                .builder()
+                                .idCorretora(idCorretora)
+                                .idUsuario(idUsuario)
+                                .build()));
     }
 
     public Carteira findCarteiraById(Long idCarteira) {

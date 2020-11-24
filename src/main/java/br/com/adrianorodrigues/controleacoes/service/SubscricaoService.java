@@ -2,6 +2,7 @@ package br.com.adrianorodrigues.controleacoes.service;
 
 import br.com.adrianorodrigues.controleacoes.exception.ResourceNotFoundException;
 import br.com.adrianorodrigues.controleacoes.interfaces.CrudService;
+import br.com.adrianorodrigues.controleacoes.model.Acao;
 import br.com.adrianorodrigues.controleacoes.model.Subscricao;
 import br.com.adrianorodrigues.controleacoes.repository.SubscricaoRepository;
 import br.com.adrianorodrigues.controleacoes.service.transacao.TransacaoService;
@@ -42,5 +43,10 @@ public class SubscricaoService implements CrudService<Subscricao> {
     @Override
     public void delete(Long id) {
         subscricaoRepository.deleteById(id);
+    }
+
+    public List<Subscricao> findAllByUsuarioAndAcao(Long idUsuario, Acao acao) {
+
+        return subscricaoRepository.findAllByUsuarioIdAndAcao(idUsuario, acao);
     }
 }

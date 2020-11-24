@@ -29,12 +29,22 @@ public class SubscricaoController {
     CarteiraService carteiraService;
 
     @GetMapping("")
-    public List<SubscricaoDTO> getCarteira(Pageable pageable, @RequestParam("idUsuario") Long idUsuario) {
-        return subscricaoService
-                .findAllByUsuario(idUsuario)
-                .stream()
-                .map(subscricao -> SubscricaoDtoMapper.from(subscricao).map())
-                .collect(Collectors.toList());
+    public List<SubscricaoDTO> getCarteira(Pageable pageable, @RequestParam("idUsuario") Long idUsuario, @RequestParam(value = "papel", required = false) String papel) {
+        List<SubscricaoDTO> subscricaoDTOList = null;
+        if (papel == null) {
+            subscricaoDTOList = subscricaoService
+                    .findAllByUsuario(idUsuario)
+                    .stream()
+                    .map(subscricao -> SubscricaoDtoMapper.from(subscricao).map())
+                    .collect(Collectors.toList());
+        } else {
+            subscricaoDTOList = subscricaoService
+                    .findAllByUsuarioAndAcao(idUsuario, acaoService.findAcaoByPapel(papel))
+                    .stream()
+                    .map(subscricao -> SubscricaoDtoMapper.from(subscricao).map())
+                    .collect(Collectors.toList());
+        }
+        return subscricaoDTOList;
     }
 
     @GetMapping("{id}")
@@ -45,7 +55,7 @@ public class SubscricaoController {
     @PostMapping(consumes = "application/json")
     public SubscricaoDTO post(@Valid @RequestBody SubscricaoDTO subscricaoDTO) {
         Acao acao = acaoService.findAcaoByPapel(subscricaoDTO.getPapel());
-        Carteira carteira = carteiraService.findCarteiraById(subscricaoDTO.getIdCarteira());
+        Carteira carteira = carteiraService.findCarteiraByCorretoraAndUsuario(subscricaoDTO.getIdCorretora(), subscricaoDTO.getIdUsuario());
         Subscricao subscricao = subscricaoService.save(SubscricaoMapper.from(subscricaoDTO, acao, carteira).map());
         return SubscricaoDtoMapper.from(subscricao).map();
     }
@@ -54,7 +64,7 @@ public class SubscricaoController {
     public SubscricaoDTO put(@PathVariable Long id, @Valid @RequestBody SubscricaoDTO subscricaoDTO) {
         subscricaoDTO.setId(id);
         Acao acao = acaoService.findAcaoByPapel(subscricaoDTO.getPapel());
-        Carteira carteira = carteiraService.findCarteiraById(subscricaoDTO.getIdCarteira());
+        Carteira carteira = carteiraService.findCarteiraByCorretoraAndUsuario(subscricaoDTO.getIdCorretora(), subscricaoDTO.getIdUsuario());
         Subscricao subscricao = subscricaoService.save(SubscricaoMapper.from(subscricaoDTO, acao, carteira).map());
         return SubscricaoDtoMapper.from(subscricao).map();
     }
