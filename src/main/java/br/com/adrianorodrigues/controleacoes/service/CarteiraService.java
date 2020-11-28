@@ -2,7 +2,9 @@ package br.com.adrianorodrigues.controleacoes.service;
 
 import br.com.adrianorodrigues.controleacoes.dto.AcaoDTO;
 import br.com.adrianorodrigues.controleacoes.dto.CarteiraDTO;
+import br.com.adrianorodrigues.controleacoes.dto.RiscoDto;
 import br.com.adrianorodrigues.controleacoes.exception.ResourceNotFoundException;
+import br.com.adrianorodrigues.controleacoes.mapper.AcaoDtoMapper;
 import br.com.adrianorodrigues.controleacoes.mapper.CarteiraMapper;
 import br.com.adrianorodrigues.controleacoes.model.Carteira;
 import br.com.adrianorodrigues.controleacoes.model.Corretora;
@@ -14,13 +16,16 @@ import br.com.adrianorodrigues.controleacoes.repository.CarteiraRepository;
 import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
 import br.com.adrianorodrigues.controleacoes.repository.UsuarioRepository;
 import br.com.adrianorodrigues.controleacoes.util.LogUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Component
+@Slf4j
 public class CarteiraService {
 
     @Autowired
@@ -97,16 +102,21 @@ public class CarteiraService {
                 RebalanceamentoAcao rebalanceamentoAcao = findRebalanceamentoByAcao(rebalanceamentoAcaoList, acaoDTO.getId());
                 double percentual = rebalanceamentoAcao == null ? 0 : rebalanceamentoAcao.getPercentual();
                 acaoDTO.setPercentualRebalanceamento(percentual);
-                try {
-                    acaoDTO.setValor(cotacaoAtualService.getCotacaoAtual(acaoDTO.getPapel()).getCotacao());
-                } catch (IOException e) {
-                    acaoDTO.setValor(0d);
-                    LogUtil.getLogger().error("Erro ao buscar cotacao atual", e);
-                }
+                acaoDTO = getValorAcaoDto(acaoDTO);
             }
             acoes.put(transacao.getAcao().getPapel(), acaoDTO);
         });
         return acoes;
+    }
+
+    private AcaoDTO getValorAcaoDto(AcaoDTO acaoDTO) {
+        try {
+            acaoDTO.setValor(cotacaoAtualService.getCotacaoAtual(acaoDTO.getPapel()).getCotacao());
+        } catch (IOException e) {
+            acaoDTO.setValor(0d);
+            LogUtil.getLogger().error("Erro ao buscar cotacao atual", e);
+        }
+        return acaoDTO;
     }
 
     public Set<Carteira> findCarteiraByUsuario(Long idUsuario) {
@@ -142,5 +152,35 @@ public class CarteiraService {
         return carteiraRepository
                 .findById(idCarteira)
                 .orElseThrow(() -> new ResourceNotFoundException("Carteira nao encontrada"));
+    }
+
+    public RiscoDto getRisco(Long idUsuario, Double riscoBaixoMedio, Double riscoMedioAlto) {
+        RiscoDto riscoDto = new RiscoDto();
+        List<RebalanceamentoAcao> rebalanceamentoAcaoList = rebalanceamentoAcaoService
+                .findAllByUsuario(idUsuario);
+        List<AcaoDTO> acaoDTOList = transacaoRepository
+                .findAllDistinctAcaoByUsuarioIdGroupByAcao(idUsuario)
+                .stream()
+                .filter(acaoDtoView -> acaoDtoView.getQuantidade() > 0)
+                .map(acaoDtoView -> {
+                    RebalanceamentoAcao rebalanceamentoAcao = findRebalanceamentoByAcao(rebalanceamentoAcaoList, acaoDtoView.getId());
+                    AcaoDTO acaoDTO = AcaoDtoMapper
+                            .from(acaoDtoView,
+                                    rebalanceamentoAcao)
+                            .map();
+                    acaoDTO = getValorAcaoDto(acaoDTO);
+                    double valor = acaoDTO.getQuantidade() * acaoDTO.getValor();
+                    if (acaoDTO.getNota() > riscoMedioAlto)
+                        riscoDto.setTotalRiscoAlto(riscoDto.getTotalRiscoAlto() + valor);
+                    else if (acaoDTO.getNota() < riscoBaixoMedio)
+                        riscoDto.setTotalRiscoBaixo(riscoDto.getTotalRiscoBaixo() + valor);
+                    else
+                        riscoDto.setTotalRiscoMedio(riscoDto.getTotalRiscoMedio() + valor);
+                    riscoDto.setValorTotal(riscoDto.getValorTotal() + valor);
+                    return acaoDTO;
+                })
+                .collect(Collectors.toList());
+        riscoDto.setAcaoList(acaoDTOList);
+        return riscoDto;
     }
 }

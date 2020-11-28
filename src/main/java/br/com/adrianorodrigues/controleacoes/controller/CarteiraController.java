@@ -1,6 +1,7 @@
 package br.com.adrianorodrigues.controleacoes.controller;
 
 import br.com.adrianorodrigues.controleacoes.dto.CarteiraDTO;
+import br.com.adrianorodrigues.controleacoes.dto.RiscoDto;
 import br.com.adrianorodrigues.controleacoes.mapper.CarteiraDtoMapper;
 import br.com.adrianorodrigues.controleacoes.service.CarteiraService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,13 @@ public class CarteiraController {
                         .from(carteira)
                         .map())
                 .collect(Collectors.toSet());
+    }
+
+    @GetMapping("risco")
+    public RiscoDto getRisco(@RequestParam("idUsuario") Long idUsuario,
+                             @RequestParam("riscoBaixoMedio") Double riscoBaixoMedio,
+                             @RequestParam("riscoMedioAlto") Double riscoMedioAlto) {
+        return carteiraService.getRisco(idUsuario, riscoBaixoMedio, riscoMedioAlto);
     }
 
     @PostMapping(consumes = "application/json")
