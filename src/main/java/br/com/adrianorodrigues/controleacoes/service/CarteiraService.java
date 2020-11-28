@@ -171,9 +171,9 @@ public class CarteiraService {
                     acaoDTO = getValorAcaoDto(acaoDTO);
                     double valor = acaoDTO.getQuantidade() * acaoDTO.getValor();
                     if (acaoDTO.getNota() > riscoMedioAlto)
-                        riscoDto.setTotalRiscoAlto(riscoDto.getTotalRiscoAlto() + valor);
-                    else if (acaoDTO.getNota() < riscoBaixoMedio)
                         riscoDto.setTotalRiscoBaixo(riscoDto.getTotalRiscoBaixo() + valor);
+                    else if (acaoDTO.getNota() < riscoBaixoMedio)
+                        riscoDto.setTotalRiscoAlto(riscoDto.getTotalRiscoAlto() + valor);
                     else
                         riscoDto.setTotalRiscoMedio(riscoDto.getTotalRiscoMedio() + valor);
                     riscoDto.setValorTotal(riscoDto.getValorTotal() + valor);
