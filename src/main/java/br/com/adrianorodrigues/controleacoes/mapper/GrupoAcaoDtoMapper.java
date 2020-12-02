@@ -17,6 +17,7 @@ public class GrupoAcaoDtoMapper {
                 .percentual(grupoAcao.getPercentual())
                 .acaoList(grupoAcao.getAcaoList())
                 .subgrupoList(grupoAcao.getSubgrupoList())
+                .valorInvestido(0D)
                 .build();
         return GrupoAcaoDtoMapper
                 .builder()

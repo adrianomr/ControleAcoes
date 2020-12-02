@@ -7,4 +7,8 @@ import java.util.List;
 
 public interface GrupoAcaoRepository extends JpaRepository<GrupoAcao, Long> {
     List<GrupoAcao> findAllByUsuarioId(Long idUsuario);
+
+    List<GrupoAcao> findAllByUsuarioIdAndSubgrupoListNull(Long idUsuario);
+
+    List<GrupoAcao> findAllByUsuarioIdAndSubgrupoListNotNull(Long idUsuario);
 }

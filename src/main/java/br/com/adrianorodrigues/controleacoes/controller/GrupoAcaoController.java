@@ -1,5 +1,6 @@
 package br.com.adrianorodrigues.controleacoes.controller;
 
+import br.com.adrianorodrigues.controleacoes.dto.ChartSubgrupoDto;
 import br.com.adrianorodrigues.controleacoes.dto.GrupoAcaoDto;
 import br.com.adrianorodrigues.controleacoes.mapper.GrupoAcaoDtoMapper;
 import br.com.adrianorodrigues.controleacoes.mapper.GrupoAcaoMapper;
@@ -22,10 +23,19 @@ public class GrupoAcaoController {
     UsuarioService usuarioService;
 
     @GetMapping
-    public List<GrupoAcaoDto> get(@RequestParam("idUsuario") Long idUsuario) {
-        return grupoAcaoService.findByIdUsuario(idUsuario).stream()
+    public List<GrupoAcaoDto> get(@RequestParam("idUsuario") Long idUsuario,
+                                  @RequestParam(value = "onlyGroups", required = false, defaultValue = "false")
+                                          Boolean onlyGroups,
+                                  @RequestParam(value = "onlySubgroups", required = false, defaultValue = "false")
+                                          Boolean onlySubgroups) {
+        return grupoAcaoService.findByIdUsuario(idUsuario, onlyGroups, onlySubgroups).stream()
                 .map((grupoAcao -> GrupoAcaoDtoMapper.from(grupoAcao).map()))
                 .collect(Collectors.toList());
+    }
+
+    @GetMapping("/chart/subgrupo")
+    public ChartSubgrupoDto getChartSubgrupo(@RequestParam("idUsuario") Long idUsuario) {
+        return grupoAcaoService.getChartSubgrupo(idUsuario);
     }
 
     @GetMapping("{id}")

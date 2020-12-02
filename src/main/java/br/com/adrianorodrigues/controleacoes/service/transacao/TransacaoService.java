@@ -10,6 +10,7 @@ import br.com.adrianorodrigues.controleacoes.model.transacao.TipoTransacao;
 import br.com.adrianorodrigues.controleacoes.model.transacao.Transacao;
 import br.com.adrianorodrigues.controleacoes.repository.TransacaoRepository;
 import br.com.adrianorodrigues.controleacoes.repository.UsuarioRepository;
+import br.com.adrianorodrigues.controleacoes.repository.view.AcaoDtoView;
 import br.com.adrianorodrigues.controleacoes.service.CarteiraService;
 import br.com.adrianorodrigues.controleacoes.service.acao.AcaoService;
 import br.com.adrianorodrigues.controleacoes.util.ExcelUtil;
@@ -85,5 +86,9 @@ public class TransacaoService {
         Sheet sheet = ExcelUtil.getSheet(file);
         Carteira carteira = carteiraService.findCarteiraByCorretoraAndUsuario(idCorretora, idUsuario);
         ExcelUtil.processRows(sheet, new ImportTransacaoService(this, idUsuario, carteira.getId()), 11);
+    }
+
+    public List<AcaoDtoView> findAllDistinctAcaoByUsuarioIdGroupByAcao(Long idUsuario) {
+        return transacaoRepository.findAllDistinctAcaoByUsuarioIdGroupByAcao(idUsuario);
     }
 }

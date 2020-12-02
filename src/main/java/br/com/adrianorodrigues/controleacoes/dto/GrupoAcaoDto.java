@@ -19,6 +19,7 @@ public class GrupoAcaoDto {
     private Long id;
     private String nome;
     private Double percentual;
+    private Double valorInvestido;
     private Double nota;
     private Long idUsuario;
 }
