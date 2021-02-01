@@ -55,7 +55,6 @@ public class CarteiraService {
         List<AcaoDTO> acaoDTOList = new ArrayList<>();
         acoes.values().stream().forEach(acaoDTO -> {
             if (acaoDTO.getQuantidade() > 0) {
-                acaoDTO.setPrecoMedio(acaoDTO.getPrecoMedio() / acaoDTO.getQuantidade());
                 Double lucroPrejuizoAcao = (acaoDTO.getValor() - acaoDTO.getPrecoMedio()) * acaoDTO.getQuantidade();
                 acaoDTO.setLucroPrejuizo(lucroPrejuizoAcao);
                 acaoDTOList.add(acaoDTO);
@@ -89,11 +88,11 @@ public class CarteiraService {
             AcaoDTO acaoDTO = new AcaoDTO();
             int fatorTransacao = transacao.getTipoTransacao().equals(TipoTransacao.COMPRA) ? 1 : -1;
             long quantidade = fatorTransacao * transacao.getQuantidade();
-            double valor = quantidade * transacao.getValor().doubleValue();
+            double valor = transacao.getValor().doubleValue();
             if (acoes.containsKey(transacao.getAcao().getPapel())) {
                 acaoDTO = acoes.get(transacao.getAcao().getPapel());
+                acaoDTO.setPrecoMedio(calculatePrecoMedio(acaoDTO, quantidade, valor));
                 acaoDTO.setQuantidade(acaoDTO.getQuantidade() + quantidade);
-                acaoDTO.setPrecoMedio(acaoDTO.getPrecoMedio() + valor);
             } else {
                 acaoDTO.setId(transacao.getAcao().getId());
                 acaoDTO.setPapel(transacao.getAcao().getPapel());
@@ -107,6 +106,14 @@ public class CarteiraService {
             acoes.put(transacao.getAcao().getPapel(), acaoDTO);
         });
         return acoes;
+    }
+
+    private Double calculatePrecoMedio(AcaoDTO acaoDTO, long quantidade, double valor) {
+        if(quantidade + acaoDTO.getQuantidade() == 0)
+            return 0D;
+        if(quantidade <= 0)
+            return acaoDTO.getPrecoMedio();
+        return ((acaoDTO.getPrecoMedio() * acaoDTO.getQuantidade()) + (valor * quantidade)) / (quantidade + acaoDTO.getQuantidade());
     }
 
     private AcaoDTO getValorAcaoDto(AcaoDTO acaoDTO) {

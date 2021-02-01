@@ -1,5 +1,6 @@
 package br.com.adrianorodrigues.controleacoes.service;
 
+import br.com.adrianorodrigues.controleacoes.dto.AcaoDTO;
 import br.com.adrianorodrigues.controleacoes.dto.CarteiraDTO;
 import br.com.adrianorodrigues.controleacoes.dto.CotacaoAtualDTO;
 import br.com.adrianorodrigues.controleacoes.model.Acao;
@@ -22,6 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @ExtendWith(MockitoExtension.class)
 class CarteiraServiceTest {
@@ -39,6 +41,7 @@ class CarteiraServiceTest {
     Transacao novaCompraKnri;
     Acao knri;
     CotacaoAtualDTO cotacaoKnri;
+    private Transacao vendaKnri;
 
     @BeforeEach
     void setUp() {
@@ -55,6 +58,14 @@ class CarteiraServiceTest {
         compraKnri.setData(LocalDateTime.now());
         compraKnri.setQuantidade(3);
         compraKnri.setAcao(knri);
+        vendaKnri = new Transacao();
+        vendaKnri.setId(2l);
+        vendaKnri.setUsuario(usuario);
+        vendaKnri.setValor(new BigDecimal(60));
+        vendaKnri.setTipoTransacao(TipoTransacao.VENDA);
+        vendaKnri.setData(LocalDateTime.now());
+        vendaKnri.setQuantidade(3);
+        vendaKnri.setAcao(knri);
         novaCompraKnri = new Transacao();
         novaCompraKnri.setId(2l);
         novaCompraKnri.setUsuario(usuario);
@@ -80,6 +91,77 @@ class CarteiraServiceTest {
         Assertions.assertEquals(
                 301.5,
                 carteiraDTO.getValorInvestido(),
+                "Valor investido deve ser o acumulado das transações");
+    }
+
+    @Test
+    void getCarteiraCompraEVenda() throws IOException {
+        List<Transacao> transacaoList = new ArrayList<>();
+        transacaoList.add(compraKnri);
+        transacaoList.add(vendaKnri);
+        transacaoList.add(novaCompraKnri);
+        Mockito.when(rebalanceamentoAcaoService.findAllByUsuario(1l)).thenReturn(null);
+        Mockito.when(transacaoRepository.findAllByUsuario(usuario)).thenReturn(transacaoList);
+        Mockito.when(cotacaoAtualService.getCotacaoAtual("KNRI11")).thenReturn(cotacaoKnri);
+        CarteiraDTO carteiraDTO = carteiraService.getCarteira(1l);
+        AcaoDTO bcff11 = carteiraDTO.getAcoes().get(0);
+        Assertions.assertEquals(
+                150.75,
+                carteiraDTO.getValorInvestido(),
+                "Valor investido deve ser o acumulado das transações");
+        Assertions.assertEquals(
+                50.25,
+                bcff11.getPrecoMedio(),
+                "Valor investido deve ser o acumulado das transações");
+    }
+
+    @Test
+    void getAcoesCompraEVenda() throws IOException {
+        List<Transacao> transacaoList = new ArrayList<>();
+        transacaoList.add(compraKnri);
+        transacaoList.add(vendaKnri);
+        transacaoList.add(novaCompraKnri);
+        Mockito.when(rebalanceamentoAcaoService.findAllByUsuario(1l)).thenReturn(null);
+        Mockito.when(transacaoRepository.findAllByUsuario(usuario)).thenReturn(transacaoList);
+        Mockito.when(cotacaoAtualService.getCotacaoAtual("KNRI11")).thenReturn(cotacaoKnri);
+        Map<String, AcaoDTO> carteiraDTO = carteiraService.getAcoes(usuario);
+        AcaoDTO knri11 = carteiraDTO.get("KNRI11");
+        Assertions.assertEquals(
+                50.25,
+                knri11.getPrecoMedio(),
+                "Valor investido deve ser o acumulado das transações");
+    }
+
+    @Test
+    void getAcoesCompraCompraVenda() throws IOException {
+        List<Transacao> transacaoList = new ArrayList<>();
+        transacaoList.add(compraKnri);
+        transacaoList.add(novaCompraKnri);
+        transacaoList.add(vendaKnri);
+        Mockito.when(rebalanceamentoAcaoService.findAllByUsuario(1l)).thenReturn(null);
+        Mockito.when(transacaoRepository.findAllByUsuario(usuario)).thenReturn(transacaoList);
+        Mockito.when(cotacaoAtualService.getCotacaoAtual("KNRI11")).thenReturn(cotacaoKnri);
+        Map<String, AcaoDTO> carteiraDTO = carteiraService.getAcoes(usuario);
+        AcaoDTO knri11 = carteiraDTO.get("KNRI11");
+        Assertions.assertEquals(
+                50.25,
+                knri11.getPrecoMedio(),
+                "Valor investido deve ser o acumulado das transações");
+    }
+
+    @Test
+    void getAcoesCompraTest() throws IOException {
+        List<Transacao> transacaoList = new ArrayList<>();
+        transacaoList.add(compraKnri);
+        transacaoList.add(novaCompraKnri);
+        Mockito.when(rebalanceamentoAcaoService.findAllByUsuario(1l)).thenReturn(null);
+        Mockito.when(transacaoRepository.findAllByUsuario(usuario)).thenReturn(transacaoList);
+        Mockito.when(cotacaoAtualService.getCotacaoAtual("KNRI11")).thenReturn(cotacaoKnri);
+        Map<String, AcaoDTO> carteiraDTO = carteiraService.getAcoes(usuario);
+        AcaoDTO knri11 = carteiraDTO.get("KNRI11");
+        Assertions.assertEquals(
+                50.25,
+                knri11.getPrecoMedio(),
                 "Valor investido deve ser o acumulado das transações");
     }
 
