@@ -99,7 +99,7 @@ public class CarteiraService {
                 acaoDTO.setQuantidade(quantidade);
                 acaoDTO.setPrecoMedio(valor);
                 RebalanceamentoAcao rebalanceamentoAcao = findRebalanceamentoByAcao(rebalanceamentoAcaoList, acaoDTO.getId());
-                double percentual = rebalanceamentoAcao == null ? 0 : rebalanceamentoAcao.getPercentual();
+                double percentual = rebalanceamentoAcao == null || rebalanceamentoAcao.getPercentual() == null ? 0 : rebalanceamentoAcao.getPercentual();
                 acaoDTO.setPercentualRebalanceamento(percentual);
                 acaoDTO = getValorAcaoDto(acaoDTO);
             }

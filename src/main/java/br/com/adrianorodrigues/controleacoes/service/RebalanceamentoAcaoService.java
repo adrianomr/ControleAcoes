@@ -16,12 +16,17 @@ import java.util.stream.Collectors;
 
 @Component
 public class RebalanceamentoAcaoService {
-    @Autowired
-    RebalanceamentoAcaoRepository rebalanceamentoAcaoRepository;
-    @Autowired
+
+    private RebalanceamentoAcaoRepository rebalanceamentoAcaoRepository;
     private CotacaoAtualService cotacaoAtualService;
-    @Autowired
     private CarteiraService carteiraService;
+
+    @Autowired
+    public RebalanceamentoAcaoService(RebalanceamentoAcaoRepository rebalanceamentoAcaoRepository, CotacaoAtualService cotacaoAtualService, CarteiraService carteiraService) {
+        this.rebalanceamentoAcaoRepository = rebalanceamentoAcaoRepository;
+        this.cotacaoAtualService = cotacaoAtualService;
+        this.carteiraService = carteiraService;
+    }
 
     public void save(RebalanceamentoAcao rebalanceamentoAcao) {
         rebalanceamentoAcaoRepository.save(rebalanceamentoAcao);
@@ -34,7 +39,18 @@ public class RebalanceamentoAcaoService {
     public List<RebalanceamentoAcao> findAllByUsuario(Long idUsuario) {
         Usuario usuario = new Usuario();
         usuario.setId(idUsuario);
-        return rebalanceamentoAcaoRepository.findAllByUsuario(usuario);
+        List<RebalanceamentoAcao> rebalanceamentoAcaoList = rebalanceamentoAcaoRepository.findAllByUsuario(usuario);
+        double totalPercentual = 0d;
+        double totalNotas = 0d;
+        for(RebalanceamentoAcao rebalanceamentoAcao : rebalanceamentoAcaoList){
+            totalPercentual += rebalanceamentoAcao.getPercentual() == null ? 0 : rebalanceamentoAcao.getPercentual();
+            totalNotas += rebalanceamentoAcao.getPercentual() != null ? 0 : rebalanceamentoAcao.getNota();
+        }
+        for(RebalanceamentoAcao rebalanceamentoAcao : rebalanceamentoAcaoList){
+            if(rebalanceamentoAcao.getPercentual() == null)
+                rebalanceamentoAcao.setPercentual((rebalanceamentoAcao.getNota()/totalNotas)*(100-totalPercentual));
+        }
+        return rebalanceamentoAcaoList;
     }
 
     public CarteiraDTO getCarteiraParaRebalanceamento(Long idUsuario) {
